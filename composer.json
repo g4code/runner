@@ -1,0 +1,44 @@
+{
+    "name": "g4/runner",
+    "description": "g4 application runner - bootstrapper",
+    "keywords": [
+        "application",
+        "bootstrap",
+        "run"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dejan Samardzija",
+            "email": "samardzija.dejan@gmail.com"
+        },
+        {
+            "name": "Drasko Gomboc",
+            "email": "drasko.gomboc@gmail.com"
+        },
+        {
+            "name": "Ivan Krickovic",
+            "email": "ivan.krickovic@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"G4\\Runner\\": "src/"}
+    },
+    "require-dev": {
+
+    },
+    "require": {
+        "php"             : ">=5.3.3",
+        "g4/config"       : "0.1.0",
+        "g4/di"           : "0.1.0",
+        "g4/log"          : "0.1.1",
+        "g4/router"       : "0.1.2",
+        "g4/clean-core"   : "0.11.1",
+        "g4/commando"     : "0.3.0",
+        "g4/data-mapper"  : "0.2.3",
+        "g4/mcache"       : "0.6.1",
+        "g4/russian-doll" : "0.1.1",
+        "g4/storage"      : "0.1.5",
+        "g4/tasker"       : "0.5.1"
+    }
+}
