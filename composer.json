@@ -28,18 +28,6 @@
 
     },
     "require": {
-        "php"             : ">=5.3.3",
-        "g4/config"       : "0.1.0",
-        "g4/di"           : "0.1.1",
-        "g4/http"         : "0.1.1",
-        "g4/log"          : "0.1.1",
-        "g4/router"       : "0.1.2",
-        "g4/clean-core"   : "0.11.2",
-        "g4/commando"     : "0.3.0",
-        "g4/data-mapper"  : "0.2.4",
-        "g4/mcache"       : "0.6.1",
-        "g4/russian-doll" : "0.1.1",
-        "g4/storage"      : "0.1.5",
-        "g4/tasker"       : "0.5.3"
+        "php": ">=5.3.3"
     }
 }
