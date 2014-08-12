@@ -2,7 +2,6 @@
 
 namespace G4\Runner;
 
-use G4\CleanCore\Application;
 use G4\DI\Container as DI;
 
 abstract class Runner implements RunnerInterface
