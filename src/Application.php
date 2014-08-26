@@ -3,6 +3,7 @@
 namespace G4\Runner;
 
 use G4\CleanCore\Request\Request;
+use G4\DI\Container as DI;
 
 class Application extends \G4\CleanCore\Application
 {
@@ -14,6 +15,14 @@ class Application extends \G4\CleanCore\Application
                 ->setMethod($appRunner->getApplicationMethod())
                 ->setResourceName($appRunner->getApplicationService())
                 ->setParams($appRunner->getApplicationParams());
+
+            // set anonymization rules for sensitive parameters
+            $anonymizationRules = DI::get('RequestAnonymizationRules');
+            if(!empty($anonymizationRules)) {
+                foreach ($anonymizationRules as $param => $rule) {
+                    $request->setAnonymizationRules($param, $rule);
+                }
+            }
 
             $this
                 ->setRequest($request)
