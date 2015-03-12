@@ -6,15 +6,36 @@ use G4\DI\Container as DI;
 
 class Db
 {
-    /** @var \Zend_Db_Profiler */
+    /**
+     * @var \Zend_Db_Profiler
+     */
     private $dbProfiler;
+
+    /**
+     * @var \G4\DataMapper\Profiler\Search
+     */
+    private $searchProfiler;
 
     public function __construct()
     {
-        $this->dbProfiler = DI::get('db')->getProfiler();
+        $this->dbProfiler     = DI::get('db')->getProfiler();
+        $this->searchProfiler = \G4\DataMapper\Profiler\Search::getInstance();
     }
 
     public function getProfilerOutput()
+    {
+        return [
+            'database' => $this->getProfilerDbOutput(),
+            'search'   => $this->getProfilerSearchOutput(),
+        ];
+    }
+
+    private function formatElapsedTime($value)
+    {
+        return sprintf("%3f ms", $value * 1000);
+    }
+
+    private function getProfilerDbOutput()
     {
         $output                  = [];
         $longestQuery            = '';
@@ -44,8 +65,15 @@ class Db
         return $output;
     }
 
-    private function formatElapsedTime($value)
+    private function getProfilerSearchOutput()
     {
-        return sprintf("%3f ms", $value * 1000);
+        $output = [
+            'total_number_of_queries' => $this->searchProfiler->getTotalNumQueries(),
+            'total_elapsed_time'      => $this->formatElapsedTime($this->searchProfiler->getTotalElapsedTime()),
+        ];
+        foreach($this->searchProfiler->getData() as $data) {
+            $output['queries'][] = $data->getFormatted();
+        }
+        return $output;
     }
 }
