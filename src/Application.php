@@ -17,12 +17,10 @@ class Application extends \G4\CleanCore\Application
                 ->setParams($appRunner->getApplicationParams());
 
             // set anonymization rules for sensitive parameters
-            if(DI::has('RequestAnonymizationRules')) {
-                $anonymizationRules = DI::get('RequestAnonymizationRules');
-                if(!empty($anonymizationRules)) {
-                    foreach ($anonymizationRules as $param => $rule) {
-                        $request->setAnonymizationRules($param, $rule);
-                    }
+            $anonymizationRules = DI::get('RequestAnonymizationRules');
+            if(!empty($anonymizationRules)) {
+                foreach ($anonymizationRules as $param => $rule) {
+                    $request->setAnonymizationRules($param, $rule);
                 }
             }
 

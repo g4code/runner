@@ -44,8 +44,8 @@ class Basic
         ];
 
         if($this->isDbProfilerEnabled()) {
-            $dbProfiler = new DbProfiler;
-            $data['profiler_db'] = $dbProfiler->getProfilerOutput();
+            $dbProfiler = new DbProfiler($this->getAppRunner()->getProfilers());
+            $data['profiler'] = $dbProfiler->getProfilerOutput();
         }
 
         return $data;

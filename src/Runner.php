@@ -16,6 +16,12 @@ abstract class Runner implements RunnerInterface
      */
     protected $httpResponse;
 
+    /**
+     * @var array
+     */
+    private $profilers;
+
+
     public final function bootstrap()
     {
         $this->_bootstrap();
@@ -23,6 +29,17 @@ abstract class Runner implements RunnerInterface
     }
 
     abstract protected function _bootstrap();
+
+    public function getProfilers()
+    {
+        return $this->profilers;
+    }
+
+    public function registerProfiler($profiler)
+    {
+        $this->profilers[] = $profiler;
+        return $this;
+    }
 
     public final function run()
     {

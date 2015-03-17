@@ -12,68 +12,44 @@ class Db
     private $dbProfiler;
 
     /**
-     * @var \G4\DataMapper\Profiler\Search
+     * @var array
      */
-    private $searchProfiler;
+    private $profilers;
 
-    public function __construct()
+
+    public function __construct(array $profilers = null)
     {
-        $this->dbProfiler     = DI::get('db')->getProfiler();
-        $this->searchProfiler = \G4\DataMapper\Profiler\Search::getInstance();
+        $this->profilers = $profilers;
+        $this->dbProfiler = DI::get('db')->getProfiler();
     }
 
+    /**
+     * @return array
+     */
     public function getProfilerOutput()
     {
-        return [
-            'database' => $this->getProfilerDbOutput(),
-            'search'   => $this->getProfilerSearchOutput(),
-        ];
+        return $this->hasProfilers()
+            ? $this->getFormatted()
+            : [];
     }
 
-    private function formatElapsedTime($value)
+    /**
+     * @return array
+     */
+    private function getFormatted()
     {
-        return sprintf("%3f ms", $value * 1000);
-    }
-
-    private function getProfilerDbOutput()
-    {
-        $output                  = [];
-        $longestQuery            = '';
-        $longestQueryElapsedTime = 0;
-
-        $output['total_number_of_queries'] = $this->dbProfiler->getTotalNumQueries();
-        $output['total_elapsed_time']      = $this->formatElapsedTime($this->dbProfiler->getTotalElapsedSecs());
-
-        if ($this->dbProfiler->getTotalNumQueries()) {
-            foreach ($this->dbProfiler->getQueryProfiles() as $queryProfile) {
-                if ($queryProfile->getElapsedSecs() > $longestQueryElapsedTime) {
-                    $longestQuery            = $queryProfile->getQuery();
-                    $longestQueryElapsedTime = $queryProfile->getElapsedSecs();
-                }
-
-                $output['queries'][] = array(
-                    'elapsed_time' => $this->formatElapsedTime($queryProfile->getElapsedSecs()),
-                    'query'        => $queryProfile->getQuery()
-                );
-            }
-
-            $output['longest_query'] = array(
-                'elapsed_time' => $this->formatElapsedTime($longestQueryElapsedTime),
-                'query'        => $longestQuery
-            );
+        $output = [];
+        foreach($this->profilers as $profiler) {
+            $output[$profiler->getName()] = $profiler->getFormatted();
         }
         return $output;
     }
 
-    private function getProfilerSearchOutput()
+    /**
+     * @return boolean
+     */
+    private function hasProfilers()
     {
-        $output = [
-            'total_number_of_queries' => $this->searchProfiler->getTotalNumQueries(),
-            'total_elapsed_time'      => $this->formatElapsedTime($this->searchProfiler->getTotalElapsedTime()),
-        ];
-        foreach($this->searchProfiler->getData() as $data) {
-            $output['queries'][] = $data->getFormatted();
-        }
-        return $output;
+        return !empty($this->profilers);
     }
 }

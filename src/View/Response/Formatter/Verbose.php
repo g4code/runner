@@ -20,7 +20,7 @@ class Verbose extends Basic
             'method'        => '',
             'resource_name' => '',
             'body_id'       => '',
-            'profiler_db'   => '',
+            'profiler'      => '',
         ];
 
         $data = array_merge($data, parent::render());
