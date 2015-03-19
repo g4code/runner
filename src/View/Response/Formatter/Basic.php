@@ -3,7 +3,7 @@
 namespace G4\Runner\View\Response\Formatter;
 
 use G4\Constants\Override;
-use G4\Runner\View\Response\Profiler\Db as DbProfiler;
+use G4\Runner\Profiler;
 
 class Basic
 {
@@ -44,8 +44,7 @@ class Basic
         ];
 
         if($this->isDbProfilerEnabled()) {
-            $dbProfiler = new DbProfiler($this->getAppRunner()->getProfilers());
-            $data['profiler'] = $dbProfiler->getProfilerOutput();
+            $data['profiler'] = $this->appRunner->getProfiler()->getProfilerOutput();
         }
 
         return $data;
