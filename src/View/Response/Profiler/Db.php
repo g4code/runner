@@ -2,14 +2,8 @@
 
 namespace G4\Runner\View\Response\Profiler;
 
-use G4\DI\Container as DI;
-
 class Db
 {
-    /**
-     * @var \Zend_Db_Profiler
-     */
-    private $dbProfiler;
 
     /**
      * @var array
@@ -20,7 +14,6 @@ class Db
     public function __construct(array $profilers = null)
     {
         $this->profilers = $profilers;
-        $this->dbProfiler = DI::get('db')->getProfiler();
     }
 
     /**

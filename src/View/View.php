@@ -2,9 +2,7 @@
 
 namespace G4\Runner\View;
 
-use G4\Runner\Runner;
 use G4\Runner\Application;
-use G4\DI\Container as DI;
 use G4\Constants\Http;
 use G4\Constants\Parameters as Param;
 use G4\Constants\Override;
@@ -48,7 +46,6 @@ class View implements ViewInterface
     public function render()
     {
         $body = $this->getResponseBody();
-
         // second we need to process response code
         // Drasko: response timeout bug if response code is 204
         $response = $this->application->getResponse();
@@ -79,17 +76,20 @@ class View implements ViewInterface
 
     private function formatResponse()
     {
-        $formatterClass = '\G4\Runner\View\Response\Formatter\Basic';
-
-        if(DI::has('G4|Runner|View|View|overrideResponseFormatterClass')) {
-            $class = DI::get('G4|Runner|View|View|overrideResponseFormatterClass');
-            if(null !== $class) {
-                $formatterClass = $class;
-            }
-        }
-
-        $formatter = new $formatterClass($this->appRunner, $this->application);
+        $formatter = $this->shouldFormatVerbose()
+            ? new \G4X\Runner\View\Response\Formatter\Verbose($this->appRunner, $this->application)
+            : new \G4X\Runner\View\Response\Formatter\Basic($this->appRunner, $this->application);
 
         return $formatter->render();
+    }
+
+    private function shouldFormatVerbose()
+    {
+        $productionEnvs = [
+            'production',
+            'beta',
+        ];
+        return (isset($this->httpParams[Override::VERBOSE_RESPONSE]) && $this->httpParams[Override::VERBOSE_RESPONSE] == 1)
+            || !in_array(APPLICATION_ENV, $productionEnvs);
     }
 }
