@@ -4,23 +4,24 @@ namespace G4\Runner;
 
 use G4\Constants\Http;
 use G4\Constants\Parameters;
+use G4\Runner\Profiler;
 
 abstract class RunnerAbstract implements RunnerInterface
 {
     /**
-     * @var G4\Http\Request
+     * @var \G4\Http\Request
      */
     protected $httpRequest;
 
     /**
-     * @var G4\Http\Response
+     * @var \G4\Http\Response
      */
     protected $httpResponse;
 
     /**
-     * @var array
+     * @var \G4\Runner\Profiler
      */
-    private $profilers;
+    private $profiler;
 
     /**
      * @var \G4\Log\Logger
@@ -53,6 +54,7 @@ abstract class RunnerAbstract implements RunnerInterface
     {
         $this->uniqueId  = md5(uniqid(microtime(), true));
         $this->startTime = microtime(true);
+        $this->profiler  = new Profiler();
     }
 
     public function setCommando(\G4\Commando\Cli $commando)
@@ -61,14 +63,17 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
-    public function getProfilers()
+    /**
+     * @return \G4\Runner\Profiler
+     */
+    public function getProfiler()
     {
-        return $this->profilers;
+        return $this->profiler;
     }
 
-    public function registerProfiler(\G4\Profiler\Ticker\TickerAbstract $profiler)
+    public function registerProfilerTicker(\G4\Profiler\Ticker\TickerAbstract $profiler)
     {
-        $this->profilers[] = $profiler;
+        $this->profiler->addProfiler($profiler);
         return $this;
     }
 
@@ -175,7 +180,8 @@ abstract class RunnerAbstract implements RunnerInterface
             $loggerData
                 ->setApplication($this->app)
                 ->setId($this->uniqueId)
-                ->setStartTime($this->startTime);
+                ->setStartTime($this->startTime)
+                ->setProfiler($this->getProfiler());
             register_shutdown_function([$this->requestLogger, 'logAppend'], $loggerData);
         }
     }
