@@ -30,6 +30,7 @@
     "require": {
         "php"          : ">=5.4",
         "g4/clean-core": "*",
-        "g4/di"        : "*"
+        "g4/di"        : "*",
+        "g4/profiler"  : "*"
     }
 }
