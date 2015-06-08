@@ -4,6 +4,7 @@ namespace G4\Runner;
 
 use G4\Constants\Http;
 use G4\Constants\Parameters;
+use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Profiler;
 
 abstract class RunnerAbstract implements RunnerInterface
@@ -12,11 +13,6 @@ abstract class RunnerAbstract implements RunnerInterface
      * @var \G4\Http\Request
      */
     protected $httpRequest;
-
-    /**
-     * @var \G4\Http\Response
-     */
-    protected $httpResponse;
 
     /**
      * @var \G4\Runner\Profiler
@@ -63,14 +59,6 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
-    /**
-     * @return \G4\Runner\Profiler
-     */
-    public function getProfiler()
-    {
-        return $this->profiler;
-    }
-
     public function registerProfilerTicker(\G4\Profiler\Ticker\TickerAbstract $profiler)
     {
         $this->profiler->addProfiler($profiler);
@@ -95,8 +83,13 @@ abstract class RunnerAbstract implements RunnerInterface
 
         $this->app->run();
 
-        $this->view = new \G4\Runner\View\View($this, $this->app);
-        $this->view->render();
+        (new Presenter
+            (new DataTransfer(
+                $this->getHttpRequest(),
+                $this->profiler,
+                $this->app->getRequest(),
+                $this->app->getResponse())))
+            ->render();
 
         $this->logResponse();
     }
@@ -107,14 +100,6 @@ abstract class RunnerAbstract implements RunnerInterface
             $this->httpRequest = new \G4\Http\Request();
         }
         return $this->httpRequest;
-    }
-
-    public function getHttpResponse()
-    {
-        if(null === $this->httpResponse) {
-            $this->httpResponse = new \G4\Http\Response();
-        }
-        return $this->httpResponse;
     }
 
     protected function parseApplicationMethod()

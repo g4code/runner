@@ -12,6 +12,7 @@ class Application extends \G4\CleanCore\Application
         if(null !== $appRunner && $appRunner instanceof \G4\Runner\RunnerInterface) {
             $request = new Request();
             $request
+                ->setModule($appRunner->getApplicationModule())
                 ->setMethod($appRunner->getApplicationMethod())
                 ->setResourceName($appRunner->getApplicationService())
                 ->setParams($appRunner->getApplicationParams());

@@ -10,8 +10,6 @@ interface RunnerInterface
 
     public function getHttpRequest();
 
-    public function getHttpResponse();
-
     public function getApplicationModule();
 
     public function getApplicationService();
