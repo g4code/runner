@@ -6,17 +6,25 @@ use G4\Constants\Format;
 use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\View\Json;
 use G4\Runner\Presenter\View\Twig;
+use G4\Runner\Presenter\View\ViewInterface;
 
 class View
 {
 
+    /**
+     * @var ContentType
+     */
     private $contentType;
 
+    /**
+     * @var array
+     */
     private $data;
 
+    /**
+     * @var DataTransfer
+     */
     private $dataTransfer;
-
-    private $format;
 
 
     public function __construct($data, ContentType $contentType, DataTransfer $dataTransfer)
@@ -26,11 +34,17 @@ class View
         $this->dataTransfer = $dataTransfer;
     }
 
+    /**
+     * @return string
+     */
     public function renderBody()
     {
         return $this->getViewInstance()->renderBody();
     }
 
+    /**
+     * @return ViewInterface
+     */
     private function getViewInstance()
     {
         switch ($this->contentType->getFormat()) {

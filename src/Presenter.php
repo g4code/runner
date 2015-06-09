@@ -12,8 +12,14 @@ use G4\Runner\Presenter\ContentType;
 class Presenter
 {
 
+    /**
+     * @var DataTransfer
+     */
     private $dataTransfer;
 
+    /**
+     * @var ContentType
+     */
     private $contentType;
 
 

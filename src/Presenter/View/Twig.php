@@ -4,7 +4,7 @@ namespace G4\Runner\Presenter\View;
 
 use G4\Runner\Presenter\DataTransfer;
 
-class Twig
+class Twig implements ViewInterface
 {
 
     const EXTENSION = 'twig';

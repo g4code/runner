@@ -4,8 +4,9 @@ namespace G4\Runner\Presenter\View;
 
 use G4\Constants\Override;
 use G4\Runner\Presenter\DataTransfer;
+use G4\Runner\Presenter\View\ViewInterface;
 
-class Json
+class Json implements ViewInterface
 {
 
     private $data;

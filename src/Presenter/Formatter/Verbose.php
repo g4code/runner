@@ -20,7 +20,7 @@ class Verbose extends FormatterAbstract implements FormatterInterface
     private function getBodyId()
     {
         return join("_", [
-            $this->getDataTransfer()->getRequest()->getMethod(),
+            $this->getDataTransfer()->getRequest()->getModule(),
             $this->getDataTransfer()->getRequest()->getResourceName(),
             $this->getDataTransfer()->getRequest()->getMethod(),
         ]);

@@ -4,9 +4,10 @@ namespace G4\Runner\Presenter;
 
 use G4\Constants\Env;
 use G4\Constants\Override;
-use \G4\Runner\Presenter\DataTransfer;
-use \G4\Runner\Presenter\Formatter\Basic;
-use \G4\Runner\Presenter\Formatter\Verbose;
+use G4\Runner\Presenter\DataTransfer;
+use G4\Runner\Presenter\Formatter\Basic;
+use G4\Runner\Presenter\Formatter\Verbose;
+use G4\Runner\Presenter\Formatter\FormatterInterface;
 
 class Formatter
 {
@@ -16,16 +17,25 @@ class Formatter
      */
     private $dataTransfer;
 
+    /**
+     * @param DataTransfer $dataTransfer
+     */
     public function __construct(DataTransfer $dataTransfer)
     {
         $this->dataTransfer = $dataTransfer;
     }
 
+    /**
+     * @return array
+     */
     public function format()
     {
         return $this->getFormatterInstance()->format();
     }
 
+    /**
+     * @return FormatterInterface
+     */
     private function getFormatterInstance()
     {
         return $this->shouldFormatVerbose()
@@ -33,6 +43,9 @@ class Formatter
             : new Basic($this->dataTransfer);
     }
 
+    /**
+     * @return boolean
+     */
     private function shouldFormatVerbose()
     {
         return ($this->dataTransfer->getHttpRequest()->has(Override::VERBOSE_RESPONSE)
