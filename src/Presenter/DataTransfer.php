@@ -3,21 +3,31 @@
 namespace G4\Runner\Presenter;
 
 use G4\Http\Request as HttpRequest;
+use G4\Runner\Profiler;
 use G4\CleanCore\Request\Request;
 use G4\CleanCore\Response\Response;
-use G4\Runner\Profiler;
 
 class DataTransfer
 {
 
+    /**
+     * @var HttpRequest
+     */
     private $httpRequest;
 
-    private $httpResponse;
-
+    /**
+     * @var Profiler
+     */
     private $profiler;
 
+    /**
+     * @var Request
+     */
     private $request;
 
+    /**
+     * @var Response
+     */
     private $response;
 
 
@@ -35,14 +45,6 @@ class DataTransfer
     public function getHttpRequest()
     {
         return $this->httpRequest;
-    }
-
-    /**
-     * @return HttpResponse
-     */
-    public function getHttpResponse()
-    {
-        return $this->httpResponse;
     }
 
     /**

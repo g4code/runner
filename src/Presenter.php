@@ -34,11 +34,17 @@ class Presenter
         (new Renderer($this->getFormattedBody(), $this->contentType, $this->dataTransfer))->render();
     }
 
+    /**
+     * @return string
+     */
     private function getFormattedBody()
     {
         return (new View($this->getFormattedData(), $this->contentType, $this->dataTransfer))->renderBody();
     }
 
+    /**
+     * @return array
+     */
     private function getFormattedData()
     {
         return (new Formatter($this->dataTransfer))->format();

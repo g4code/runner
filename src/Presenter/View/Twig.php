@@ -3,15 +3,18 @@
 namespace G4\Runner\Presenter\View;
 
 use G4\Runner\Presenter\DataTransfer;
+use G4\Runner\Presenter\View\ViewAbstract;
+use G4\Runner\Presenter\View\ViewInterface;
 
-class Twig implements ViewInterface
+class Twig extends ViewAbstract implements ViewInterface
 {
 
     const EXTENSION = 'twig';
 
-    private $data;
-
-    private $dataTransfer;
+    /**
+     * @var string
+     */
+    private $templateFilename;
 
     /**
      * @var string
@@ -24,15 +27,23 @@ class Twig implements ViewInterface
     private $cachePath;
 
 
-    public function __construct($data, DataTransfer $dataTransfer)
+    /**
+     * @param array $data
+     * @param DataTransfer $dataTransfer
+     */
+    public function __construct(array $data, DataTransfer $dataTransfer)
     {
-        $this->data          = $data;
-        $this->dataTransfer  = $dataTransfer;
-        $this->cachePath     = realpath(PATH_CACHE);
-        $this->templatesPath = realpath(PATH_APP . '/templates/' . strtolower($this->dataTransfer->getRequest()->getModule()));
+        parent::__construct($data, $dataTransfer);
+        $this->templateFilename = null;
+        $this->cachePath        = realpath(PATH_CACHE);
+        $this->templatesPath    = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
         $this->registerTemplateEngine();
     }
 
+    /**
+     * @throws \Exception
+     * @return string
+     */
     public function renderBody()
     {
         if (!$this->getFilesystemLoader()->exists($this->getTemplateFilename())) {
@@ -40,7 +51,7 @@ class Twig implements ViewInterface
         }
         return $this->getTemplateEngine()
             ->loadTemplate($this->getTemplateFilename())
-            ->render($this->data);
+            ->render($this->getData());
     }
 
     /**
@@ -67,10 +78,13 @@ class Twig implements ViewInterface
      */
     private function getTemplateFilename()
     {
-        return strtolower(join('/', [
-            $this->dataTransfer->getRequest()->getResourceName(),
-            $this->dataTransfer->getRequest()->getMethod()
-        ])) . '.' . self::EXTENSION;
+        if ($this->templateFilename === null) {
+            $this->templateFilename = strtolower(join('/', [
+                $this->getDataTransfer()->getRequest()->getResourceName(),
+                $this->getDataTransfer()->getRequest()->getMethod()
+            ])) . '.' . self::EXTENSION;
+        }
+        return $this->templateFilename;
     }
 
     private function registerTemplateEngine()

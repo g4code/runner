@@ -27,7 +27,7 @@ class View
     private $dataTransfer;
 
 
-    public function __construct($data, ContentType $contentType, DataTransfer $dataTransfer)
+    public function __construct(array $data, ContentType $contentType, DataTransfer $dataTransfer)
     {
         $this->data         = $data;
         $this->contentType  = $contentType;
