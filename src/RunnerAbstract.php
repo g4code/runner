@@ -4,6 +4,8 @@ namespace G4\Runner;
 
 use G4\Constants\Http;
 use G4\Constants\Parameters;
+use G4\Log\Logger as LogLogger;
+use G4\Runner\Logger;
 use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Profiler;
 
@@ -26,24 +28,14 @@ abstract class RunnerAbstract implements RunnerInterface
     private $httpRequest;
 
     /**
-     * @var \G4\Runner\Profiler
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @var Profiler
      */
     private $profiler;
-
-    /**
-     * @var \G4\Log\Logger
-     */
-    private $requestLogger;
-
-    /**
-     * @var string
-     */
-    private $uniqueId;
-
-    /**
-     * @var float
-     */
-    private $startTime;
 
     /**
      * @var \G4\Commando\Cli
@@ -59,9 +51,8 @@ abstract class RunnerAbstract implements RunnerInterface
 
     public function __construct()
     {
-        $this->uniqueId  = md5(uniqid(microtime(), true));
-        $this->startTime = microtime(true);
-        $this->profiler  = new Profiler();
+        $this->profiler = new Profiler();
+        $this->logger   = new Logger();
     }
 
     public function getApplicationMethod()
@@ -100,22 +91,21 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
-    public function registerRequestLogger(\G4\Log\Logger $logger)
+    public function registerRequestLogger(LogLogger $logger)
     {
-        $this->requestLogger = $logger;
+        $this->logger->setLogger($logger);
         return $this;
     }
 
     //TODO: Drasko: refactor this!
     public final function run()
     {
-        $this
-            ->route()
-            ->parseApplicationMethod();
+        $this->route();
+        $this->parseApplicationMethod();
 
         $this->application = new Application($this);
 
-        $this->logRequest();
+        $this->logger->logRequest($this->application);
 
         $this->application->run();
 
@@ -127,46 +117,13 @@ abstract class RunnerAbstract implements RunnerInterface
                 $this->application->getResponse())))
             ->render();
 
-        $this->logResponse();
+         $this->logger->logResponse($this->application, $this->profiler);
     }
 
     public function setCommando(\G4\Commando\Cli $commando)
     {
         $this->commando = $commando;
         return $this;
-    }
-
-    //TODO: Drasko: Extract to new Logger class!
-    private function isRequestLoggerRegistered()
-    {
-        return $this->requestLogger instanceof \G4\Log\Logger;
-    }
-
-    //TODO: Drasko: Extract to new Logger class!
-    private function logResponse()
-    {
-        if ($this->isRequestLoggerRegistered()) {
-            $loggerData = new \G4\Profiler\Data\Response();
-            $loggerData
-                ->setApplication($this->application)
-                ->setId($this->uniqueId)
-                ->setStartTime($this->startTime)
-                ->setProfiler($this->profiler);
-            register_shutdown_function([$this->requestLogger, 'logAppend'], $loggerData);
-        }
-    }
-
-    //TODO: Drasko: Extract to new Logger class!
-    private function logRequest()
-    {
-        if ($this->isRequestLoggerRegistered()) {
-            $loggerData = new \G4\Profiler\Data\Request();
-            $loggerData
-                ->setApplication($this->application)
-                ->setId($this->uniqueId)
-                ->setParamsToObfuscate([Parameters::CC_NUMBER, Parameters::CC_CVV2, 'image']);
-            register_shutdown_function([$this->requestLogger, 'log'], $loggerData);
-        }
     }
 
     private function parseApplicationMethod()
