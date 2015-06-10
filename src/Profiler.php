@@ -2,6 +2,8 @@
 
 namespace G4\Runner;
 
+use G4\Profiler\Ticker\TickerAbstract;
+
 class Profiler
 {
 
@@ -22,7 +24,11 @@ class Profiler
         $this->formatted = null;
     }
 
-    public function addProfiler(\G4\Profiler\Ticker\TickerAbstract $profiler)
+    /**
+     * @param TickerAbstract $profiler
+     * @return Profiler
+     */
+    public function addProfiler(TickerAbstract $profiler)
     {
         $this->profilers[] = $profiler;
         return $this;
