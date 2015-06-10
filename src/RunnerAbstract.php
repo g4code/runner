@@ -151,7 +151,7 @@ abstract class RunnerAbstract implements RunnerInterface
                 ->setApplication($this->application)
                 ->setId($this->uniqueId)
                 ->setStartTime($this->startTime)
-                ->setProfiler($this->getProfiler());
+                ->setProfiler($this->profiler);
             register_shutdown_function([$this->requestLogger, 'logAppend'], $loggerData);
         }
     }
