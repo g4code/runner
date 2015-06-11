@@ -108,13 +108,13 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
-    public function registerBasicFormatter(FormatterInterface $formatter)
+    public function registerFormatterBasic(FormatterInterface $formatter)
     {
         $this->responseFormatter->addBasic($formatter);
         return $this;
     }
 
-    public function registerVerboseFormatter(FormatterInterface $formatter)
+    public function registerFormatterVerbose(FormatterInterface $formatter)
     {
         $this->responseFormatter->addVerbose($formatter);
         return $this;
