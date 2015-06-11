@@ -5,27 +5,21 @@ namespace G4\Runner\Presenter\View;
 use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\View\ViewAbstract;
 use G4\Runner\Presenter\View\ViewInterface;
+use G4\Runner\Presenter\View\Twig\Template;
+use G4\Constants\Template as TemplateConst;
 
 class Twig extends ViewAbstract implements ViewInterface
 {
 
-    const EXTENSION = 'twig';
-
     /**
      * @var string
      */
-    private $templateFilename;
+    private $layoutName;
 
     /**
      * @var string
      */
     private $templatesPath;
-
-    /**
-     * @var string
-     */
-    private $cachePath;
-
 
     /**
      * @param array $data
@@ -34,9 +28,8 @@ class Twig extends ViewAbstract implements ViewInterface
     public function __construct(array $data, DataTransfer $dataTransfer)
     {
         parent::__construct($data, $dataTransfer);
-        $this->templateFilename = null;
-        $this->cachePath        = realpath(PATH_CACHE);
-        $this->templatesPath    = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
+        $this->templatesPath  = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
+        $this->layoutName     = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::LAYOUT);
         $this->registerTemplateEngine();
     }
 
@@ -46,45 +39,46 @@ class Twig extends ViewAbstract implements ViewInterface
      */
     public function renderBody()
     {
-        if (!$this->getFilesystemLoader()->exists($this->getTemplateFilename())) {
-            throw new \Exception('Template does not exist: ' . $this->getTemplateFilename(), 500);
-        }
-        return $this->getTemplateEngine()
-            ->loadTemplate($this->getTemplateFilename())
-            ->render($this->getData());
+        return $this->hasLayout()
+            ? $this->renderContentWithLayout()
+            : $this->renderOnlyContent();
     }
 
-    /**
-     * @return \Twig_Loader_Filesystem
-     */
-    private function getFilesystemLoader()
+    private function hasLayout()
     {
-        return new \Twig_Loader_Filesystem($this->templatesPath);
+        return !empty($this->layoutName);
     }
 
-    /**
-     * @return \Twig_Environment
-     */
-    private function getTemplateEngine()
+    private function renderContentWithLayout()
     {
-        return new \Twig_Environment($this->getFilesystemLoader(), [
-            'cache'       => $this->cachePath,
-            'auto_reload' => true,
-        ]);
+        return (new Template($this->templatesPath))->render($this->getLayoutData(), $this->getLayoutFilename());
+    }
+
+    private function renderOnlyContent()
+    {
+        return (new Template($this->templatesPath))->render($this->getData(), $this->getContentFilename());
     }
 
     /**
      * @return string
      */
-    private function getTemplateFilename()
+    private function getContentFilename()
     {
-        if ($this->templateFilename === null) {
-            $this->templateFilename = strtolower(join('/', [
-                $this->getDataTransfer()->getRequest()->getResourceName(),
-                $this->getDataTransfer()->getRequest()->getMethod()
-            ])) . '.' . self::EXTENSION;
-        }
-        return $this->templateFilename;
+        return strtolower(join('/', [
+            $this->getDataTransfer()->getRequest()->getResourceName(),
+            $this->getDataTransfer()->getRequest()->getMethod()
+        ])) . TemplateConst::EXTENSION_TWIG;
+    }
+
+    private function getLayoutData()
+    {
+        return $this->getData()
+            + [TemplateConst::CONTENT => $this->renderOnlyContent()];
+    }
+
+    private function getLayoutFilename()
+    {
+        return $this->layoutName . TemplateConst::EXTENSION_TWIG;
     }
 
     private function registerTemplateEngine()
