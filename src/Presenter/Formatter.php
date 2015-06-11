@@ -4,9 +4,8 @@ namespace G4\Runner\Presenter;
 
 use G4\Constants\Env;
 use G4\Constants\Override;
+use G4\Runner\ResponseFormatter;
 use G4\Runner\Presenter\DataTransfer;
-use G4\Runner\Presenter\Formatter\Basic;
-use G4\Runner\Presenter\Formatter\Verbose;
 use G4\Runner\Presenter\Formatter\FormatterInterface;
 
 class Formatter
@@ -18,11 +17,17 @@ class Formatter
     private $dataTransfer;
 
     /**
+     * @var ResponseFormatter
+     */
+    private $responseFormatter;
+
+    /**
      * @param DataTransfer $dataTransfer
      */
-    public function __construct(DataTransfer $dataTransfer)
+    public function __construct(DataTransfer $dataTransfer, ResponseFormatter $responseFormatter)
     {
-        $this->dataTransfer = $dataTransfer;
+        $this->dataTransfer      = $dataTransfer;
+        $this->responseFormatter = $responseFormatter;
     }
 
     /**
@@ -30,7 +35,9 @@ class Formatter
      */
     public function format()
     {
-        return $this->getFormatterInstance()->format();
+        return $this->getFormatterInstance()
+            ->setDataTransfer($this->dataTransfer)
+            ->format();
     }
 
     /**
@@ -39,8 +46,8 @@ class Formatter
     private function getFormatterInstance()
     {
         return $this->shouldFormatVerbose()
-            ? new Verbose($this->dataTransfer)
-            : new Basic($this->dataTransfer);
+            ? $this->responseFormatter->getVerbose()
+            : $this->responseFormatter->getBasic();
     }
 
     /**

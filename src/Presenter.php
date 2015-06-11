@@ -8,6 +8,7 @@ use G4\Runner\Presenter\Formatter;
 use G4\Runner\Presenter\View;
 use G4\Runner\Presenter\Renderer;
 use G4\Runner\Presenter\ContentType;
+use G4\Runner\ResponseFormatter;
 
 class Presenter
 {
@@ -22,11 +23,17 @@ class Presenter
      */
     private $contentType;
 
+    /**
+     * @var ResponseFormatter
+     */
+    private $responseFormatter;
 
-    public function __construct(DataTransfer $dataTransfer)
+
+    public function __construct(DataTransfer $dataTransfer, ResponseFormatter $responseFormatter)
     {
-        $this->dataTransfer = $dataTransfer;
-        $this->contentType  = new ContentType($this->dataTransfer);
+        $this->dataTransfer      = $dataTransfer;
+        $this->responseFormatter = $responseFormatter;
+        $this->contentType       = new ContentType($this->dataTransfer);
     }
 
     public function render()
@@ -47,6 +54,6 @@ class Presenter
      */
     private function getFormattedData()
     {
-        return (new Formatter($this->dataTransfer))->format();
+        return (new Formatter($this->dataTransfer, $this->responseFormatter))->format();
     }
 }

@@ -4,8 +4,9 @@ namespace G4\Runner\Presenter\Formatter;
 
 use G4\Constants\Override;
 use G4\Runner\Presenter\DataTransfer;
+use G4\Runner\Presenter\Formatter\FormatterInterface;
 
-abstract class FormatterAbstract
+abstract class FormatterAbstract implements FormatterInterface
 {
 
     /**
@@ -19,9 +20,8 @@ abstract class FormatterAbstract
     private $formatted;
 
 
-    public function __construct(DataTransfer $dataTransfer)
+    public function __construct()
     {
-        $this->dataTransfer = $dataTransfer;
         $this->formatted    = [];
     }
 
@@ -47,6 +47,12 @@ abstract class FormatterAbstract
         return $this->isProfilerEnabled()
             ? ['profiler' =>  $this->getDataTransfer()->getProfiler()->getProfilerOutput()]
             : [];
+    }
+
+    public function setDataTransfer(DataTransfer $dataTransfer)
+    {
+        $this->dataTransfer = $dataTransfer;
+        return $this;
     }
 
     private function isProfilerEnabled()

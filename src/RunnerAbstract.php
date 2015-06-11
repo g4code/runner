@@ -7,6 +7,7 @@ use G4\Constants\Parameters;
 use G4\Log\Logger as LogLogger;
 use G4\Runner\Logger;
 use G4\Runner\Presenter\DataTransfer;
+use G4\Runner\Presenter\Formatter\FormatterInterface;
 use G4\Runner\Profiler;
 
 abstract class RunnerAbstract implements RunnerInterface
@@ -21,6 +22,12 @@ abstract class RunnerAbstract implements RunnerInterface
      * @var string
      */
     private $applicationMethod;
+
+    /**
+     * @var \G4\Commando\Cli
+     */
+    private $commando;
+
 
     /**
      * @var \G4\Http\Request
@@ -38,9 +45,9 @@ abstract class RunnerAbstract implements RunnerInterface
     private $profiler;
 
     /**
-     * @var \G4\Commando\Cli
+     * @var ResponseFormatter
      */
-    private $commando;
+    private $responseFormatter;
 
     /**
      * @var array
@@ -51,8 +58,9 @@ abstract class RunnerAbstract implements RunnerInterface
 
     public function __construct()
     {
-        $this->profiler = new Profiler();
-        $this->logger   = new Logger();
+        $this->profiler          = new Profiler();
+        $this->logger            = new Logger();
+        $this->responseFormatter = new ResponseFormatter();
     }
 
     public function getApplicationMethod()
@@ -100,6 +108,18 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
+    public function registerBasicFormatter(FormatterInterface $formatter)
+    {
+        $this->responseFormatter->addBasic($formatter);
+        return $this;
+    }
+
+    public function registerVerboseFormatter(FormatterInterface $formatter)
+    {
+        $this->responseFormatter->addVerbose($formatter);
+        return $this;
+    }
+
     //TODO: Drasko: refactor this!
     public final function run()
     {
@@ -112,13 +132,7 @@ abstract class RunnerAbstract implements RunnerInterface
 
         $this->application->run();
 
-        (new Presenter
-            (new DataTransfer(
-                $this->getHttpRequest(),
-                $this->profiler,
-                $this->application->getRequest(),
-                $this->application->getResponse())))
-            ->render();
+        (new Presenter($this->getDataTransfer(), $this->responseFormatter))->render();
 
          $this->logger->logResponse($this->application, $this->profiler);
     }
@@ -127,6 +141,15 @@ abstract class RunnerAbstract implements RunnerInterface
     {
         $this->commando = $commando;
         return $this;
+    }
+
+    private function getDataTransfer()
+    {
+        return new DataTransfer(
+            $this->getHttpRequest(),
+            $this->profiler,
+            $this->application->getRequest(),
+            $this->application->getResponse());
     }
 
     private function parseApplicationMethod()
