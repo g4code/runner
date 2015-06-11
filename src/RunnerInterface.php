@@ -8,6 +8,9 @@ interface RunnerInterface
 
     public function run();
 
+    /**
+     * @return \G4\Http\Request
+     */
     public function getHttpRequest();
 
     public function getApplicationModule();

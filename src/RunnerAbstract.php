@@ -77,6 +77,9 @@ abstract class RunnerAbstract implements RunnerInterface
         return ucwords($this->routerOptions['service']);
     }
 
+    /**
+     * @return \G4\Http\Request
+     */
     public function getHttpRequest()
     {
         if(null === $this->httpRequest) {
