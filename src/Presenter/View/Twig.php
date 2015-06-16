@@ -64,10 +64,14 @@ class Twig extends ViewAbstract implements ViewInterface
      */
     private function getContentFilename()
     {
-        return strtolower(join('/', [
-            $this->getDataTransfer()->getRequest()->getResourceName(),
-            $this->getDataTransfer()->getRequest()->getMethod()
-        ])) . TemplateConst::EXTENSION_TWIG;
+        $templateName = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::TEMPLATE);
+        return ($templateName !== null
+            ? $templateName
+            : strtolower(join('/', [
+                $this->getDataTransfer()->getRequest()->getResourceName(),
+                $this->getDataTransfer()->getRequest()->getMethod()
+            ])))
+            . TemplateConst::EXTENSION_TWIG;
     }
 
     private function getLayoutData()
