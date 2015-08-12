@@ -2,7 +2,6 @@
 
 namespace G4\Runner\Presenter\View\Twig;
 
-
 class Template
 {
 
@@ -11,6 +10,11 @@ class Template
      */
     private $templatesPath;
 
+    /**
+     *
+     * @var \Twig_Environment
+     */
+    private $templateEngine;
 
     /**
      * @param array $data
@@ -30,6 +34,7 @@ class Template
         if (!$this->getFilesystemLoader()->exists($templateName)) {
             throw new \Exception('Twig template does not exist: ' . $templateName, 500);
         }
+
         return $this->getTemplateEngine()
             ->loadTemplate($templateName)
             ->render($data);
@@ -48,9 +53,15 @@ class Template
      */
     private function getTemplateEngine()
     {
-        return new \Twig_Environment($this->getFilesystemLoader(), [
-            'cache'       => realpath(PATH_CACHE),
-            'auto_reload' => true,
-        ]);
+        if(!$this->templateEngine instanceof \Twig_Environment) {
+            $this->templateEngine = new \Twig_Environment($this->getFilesystemLoader(), [
+                'cache'       => realpath(PATH_CACHE),
+                'auto_reload' => true,
+            ]);
+            $this->templateEngine->addExtension(new \Twig_Extensions_Extension_I18n());
+        }
+
+        return $this->templateEngine;
+
     }
 }
