@@ -25,13 +25,14 @@
         "psr-4": {"G4\\Runner\\": "src/"}
     },
     "require-dev": {
-
     },
     "require": {
-        "php"          : ">=5.4",
-        "g4/clean-core": "*",
-        "g4/http"      : "*",
-        "g4/di"        : "*",
-        "g4/profiler"  : "*"
+        "php"            : ">=5.4",
+        "g4/clean-core"  : "*",
+        "g4/http"        : "*",
+        "g4/di"          : "*",
+        "g4/profiler"    : "*",
+        "twig/twig"      : "1.*",
+        "twig/extensions": "^1.2"
     }
 }
