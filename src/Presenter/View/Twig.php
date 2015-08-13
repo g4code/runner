@@ -7,6 +7,7 @@ use G4\Runner\Presenter\View\ViewAbstract;
 use G4\Runner\Presenter\View\ViewInterface;
 use G4\Runner\Presenter\View\Twig\Template;
 use G4\Constants\Template as TemplateConst;
+use G4\Constants\Http;
 
 class Twig extends ViewAbstract implements ViewInterface
 {
@@ -64,14 +65,27 @@ class Twig extends ViewAbstract implements ViewInterface
      */
     private function getContentFilename()
     {
+//         var_dump($this->getDataTransfer()->getResponse()->getHttpResponseCode());die;
         $templateName = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::TEMPLATE);
         return ($templateName !== null
             ? $templateName
-            : strtolower(join('/', [
-                $this->getDataTransfer()->getRequest()->getResourceName(),
-                $this->getDataTransfer()->getRequest()->getMethod()
-            ])))
+            : $this->buildTemplateNameFromDataTransfer())
             . TemplateConst::EXTENSION_TWIG;
+    }
+
+    private function hasErrorsInResponse()
+    {
+        return $this->getDataTransfer()->getResponse()->getHttpResponseCode() < Http::CODE_200
+            || $this->getDataTransfer()->getResponse()->getHttpResponseCode() >= Http::CODE_300;
+    }
+
+    private function buildTemplateNameFromDataTransfer()
+    {
+        //TODO: Drasko: this is temp solution!
+        $parts = $this->hasErrorsInResponse()
+            ? ['error', 'index']
+            : [$this->getDataTransfer()->getRequest()->getResourceName(), $this->getDataTransfer()->getRequest()->getMethod()];
+        return strtolower(join('/', $parts));
     }
 
     private function getLayoutData()
