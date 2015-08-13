@@ -5,6 +5,7 @@ namespace G4\Runner\Presenter;
 use G4\Constants\Format;
 use G4\Constants\ContentType as ContentTypeConst;
 use G4\Runner\Presenter\DataTransfer;
+use G4\Runner\Presenter\HeaderAccept;
 
 class ContentType
 {
@@ -19,6 +20,11 @@ class ContentType
      */
     private $format;
 
+    /**
+     * @var HeaderAccept
+     */
+    private $headerAccept;
+
 
     /**
      * @param DataTransfer $dataTransfer
@@ -26,7 +32,8 @@ class ContentType
     public function __construct(DataTransfer $dataTransfer)
     {
         $this->dataTransfer = $dataTransfer;
-        $this->setFormat();
+        $this->headerAccept = new HeaderAccept(); //TODO: Drasko move from construct dependency!
+        $this->formatFactory();
     }
 
     /**
@@ -34,7 +41,7 @@ class ContentType
      */
     public function getContentType()
     {
-        return $this->map()[$this->getFormat()];
+        return $this->contentTypeMap()[$this->getFormat()];
     }
 
     /**
@@ -52,14 +59,14 @@ class ContentType
     {
         return in_array($this->format, [
             Format::JSON,
-            Format::TWIG
+            Format::TWIG,
         ]);
     }
 
     /**
      * @return array
      */
-    private function map()
+    private function contentTypeMap()
     {
         return [
             Format::JSON => ContentTypeConst::JSON,
@@ -70,10 +77,10 @@ class ContentType
     /**
      * @throws \Exception
      */
-    private function setFormat()
+    private function formatFactory()
     {
         $format = $this->dataTransfer->getResponse()->getResponseObjectPart(Format::FORMAT);
-        $this->format = $format === null ? Format::JSON : $format;
+        $this->format = $format === null ? $this->headerAccept->getFormat() : $format;
         if (! $this->isFormatValid()) {
             throw new \Exception(600, 'Not valid runner view format!');
         }
