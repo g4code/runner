@@ -77,7 +77,7 @@ abstract class RunnerAbstract implements RunnerInterface
     {
         return $this->getHttpRequest()->isCli()
             ? json_decode($this->commando->value('params'), true)
-            : $this->getHttpRequest()->getParams();
+            : $this->getReqParams();
     }
 
     public function getApplicationService()
@@ -150,6 +150,15 @@ abstract class RunnerAbstract implements RunnerInterface
             $this->profiler,
             $this->application->getRequest(),
             $this->application->getResponse());
+    }
+
+    private function getReqParams()
+    {
+        $params = $this->getHttpRequest()->getParams();
+        if(isset($this->routerOptions['url_part']) && is_array($params)){
+            $params['url_part'] = $this->routerOptions['url_part'];
+        }
+        return $params;
     }
 
     private function parseApplicationMethod()
