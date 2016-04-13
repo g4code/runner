@@ -16,7 +16,9 @@ class Application extends \G4\CleanCore\Application
                 ->setMethod($appRunner->getApplicationMethod())
                 ->setResourceName($appRunner->getApplicationService())
                 ->setParams($appRunner->getApplicationParams())
-                ->setAjaxCall($appRunner->getHttpRequest()->isAjax());
+                ->setAjaxCall($appRunner->getHttpRequest()->isAjax())
+                ->setRawInput(file_get_contents("php://input"))
+                ->setServerVariables($_SERVER);
 
             // set anonymization rules for sensitive parameters
             foreach ($this->getRequestAnonymizationRules() as $param => $rule) {
