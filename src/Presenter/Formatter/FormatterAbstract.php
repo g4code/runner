@@ -31,6 +31,7 @@ abstract class FormatterAbstract implements FormatterInterface
             'code'     => $this->getDataTransfer()->getResponse()->getHttpResponseCode(),
             'message'  => $this->getDataTransfer()->getResponse()->getHttpMessage(),
             'response' => $this->getDataTransfer()->getResponse()->getResponseObject(),
+            'env'      => defined(APPLICATION_ENV) ? APPLICATION_ENV : null,
         ];
     }
 

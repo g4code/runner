@@ -5,6 +5,7 @@ composer.lock
 # Default GIT ignore rules #
 ############################
 .svn
+.idea
 .settings
 .blackhole
 .buildpath
@@ -15,6 +16,7 @@ composer.lock
 dummy.php
 composer.phar
 vendor
+test/coverage
 
 # Compiled source #
 ###################
