@@ -57,8 +57,10 @@ class Template
             $this->templateEngine = new \Twig_Environment($this->getFilesystemLoader(), [
                 'cache'       => realpath(PATH_CACHE),
                 'auto_reload' => true,
+                'debug'       => true,
             ]);
             $this->templateEngine->addExtension(new \Twig_Extensions_Extension_I18n());
+            $this->templateEngine->addExtension(new \Twig_Extension_Debug());
         }
 
         return $this->templateEngine;
