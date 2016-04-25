@@ -54,16 +54,22 @@ class Template
     private function getTemplateEngine()
     {
         if(!$this->templateEngine instanceof \Twig_Environment) {
-            $this->templateEngine = new \Twig_Environment($this->getFilesystemLoader(), [
-                'cache'       => realpath(PATH_CACHE),
-                'auto_reload' => true,
-                'debug'       => true,
-            ]);
-            $this->templateEngine->addExtension(new \Twig_Extensions_Extension_I18n());
-            $this->templateEngine->addExtension(new \Twig_Extension_Debug());
+            if(is_callable(['\App\DI', 'templateEngine'])) {
+                $this->templateEngine = \App\DI::templateEngine();
+                if(!$this->templateEngine instanceof \Twig_Environment) {
+                    throw new \Exception("Template engine class is invalid");
+                }
+            } else {
+                $this->templateEngine = new \Twig_Environment($this->getFilesystemLoader(), [
+                    'cache'       => realpath(PATH_CACHE),
+                    'auto_reload' => true,
+                    'debug'       => true,
+                ]);
+                $this->templateEngine->addExtension(new \Twig_Extensions_Extension_I18n());
+                $this->templateEngine->addExtension(new \Twig_Extension_Debug());
+            }
         }
 
         return $this->templateEngine;
-
     }
 }
