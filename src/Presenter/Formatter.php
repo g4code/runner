@@ -55,8 +55,13 @@ class Formatter
      */
     private function shouldFormatVerbose()
     {
-        return ($this->dataTransfer->getHttpRequest()->has(Override::VERBOSE_RESPONSE)
-            && $this->dataTransfer->getHttpRequest()->get(Override::VERBOSE_RESPONSE) == 1)
-                || !in_array(APPLICATION_ENV, [Env::PRODUCTION, Env::BETA]);
+        $overdide = $this->dataTransfer->getHttpRequest()->has(Override::VERBOSE_RESPONSE)
+            && $this->dataTransfer->getHttpRequest()->get(Override::VERBOSE_RESPONSE) == 1;
+
+        $debug = defined('DEBUG') && DEBUG;
+
+        $env = defined('APPLICATION_ENV') && !in_array(APPLICATION_ENV, [Env::PRODUCTION, Env::BETA]);
+
+        return $overdide || $debug || $env;
     }
 }
