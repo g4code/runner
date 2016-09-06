@@ -24,7 +24,11 @@ class HeaderAccept
 
     public function __construct()
     {
-        $acceptFactory = new AcceptFactory($_SERVER);
+        $server = $_SERVER;
+        // Drasko: dont analize media type if a file extension exists in the path
+        unset($server['REQUEST_URI']);
+
+        $acceptFactory = new AcceptFactory($server);
         $this->accept = $acceptFactory->newInstance();
     }
 
