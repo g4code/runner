@@ -54,13 +54,16 @@ abstract class RunnerAbstract implements RunnerInterface
      */
     private $routerOptions;
 
-
-
     public function __construct()
     {
         $this->profiler          = new Profiler();
         $this->logger            = new Logger();
         $this->responseFormatter = new ResponseFormatter();
+    }
+
+    public function getApplication()
+    {
+        return $this->application;
     }
 
     public function getApplicationMethod()
