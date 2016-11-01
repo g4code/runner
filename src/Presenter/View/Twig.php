@@ -31,7 +31,6 @@ class Twig extends ViewAbstract implements ViewInterface
         parent::__construct($data, $dataTransfer);
         $this->templatesPath  = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
         $this->layoutName     = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::LAYOUT);
-        $this->registerTemplateEngine();
     }
 
     /**
@@ -97,11 +96,5 @@ class Twig extends ViewAbstract implements ViewInterface
     private function getLayoutFilename()
     {
         return $this->layoutName . TemplateConst::EXTENSION_TWIG;
-    }
-
-    private function registerTemplateEngine()
-    {
-        require_once PATH_ROOT . '/vendor/twig/twig/lib/Twig/Autoloader.php';
-        \Twig_Autoloader::register();
     }
 }
