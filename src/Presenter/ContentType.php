@@ -82,7 +82,7 @@ class ContentType
         $format = $this->dataTransfer->getResponse()->getResponseObjectPart(Format::FORMAT);
         $this->format = $format === null ? $this->headerAccept->getFormat() : $format;
         if (! $this->isFormatValid()) {
-            throw new \Exception(600, 'Not valid runner view format!');
+            throw new \Exception('Not valid runner view format!', 600);
         }
     }
 }
