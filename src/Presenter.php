@@ -9,6 +9,7 @@ use G4\Runner\Presenter\View;
 use G4\Runner\Presenter\Renderer;
 use G4\Runner\Presenter\ContentType;
 use G4\Runner\ResponseFormatter;
+use G4\Constants\HeaderAccept;
 
 class Presenter
 {
@@ -29,11 +30,11 @@ class Presenter
     private $responseFormatter;
 
 
-    public function __construct(DataTransfer $dataTransfer, ResponseFormatter $responseFormatter)
+    public function __construct(ResponseFormatter $responseFormatter, ContentType $contentType)
     {
-        $this->dataTransfer      = $dataTransfer;
+        $this->dataTransfer      = $contentType->getDataTransfer();
         $this->responseFormatter = $responseFormatter;
-        $this->contentType       = new ContentType($this->dataTransfer);
+        $this->contentType       = $contentType;
     }
 
     public function render()

@@ -17,12 +17,17 @@ class HeaderAccept
     private $accept;
 
     /**
+     * @var array
+     */
+    private $availableContentTypes;
+
+    /**
      * @var MediaValue
      */
     private $media;
 
 
-    public function __construct()
+    public function __construct($availableContentTypes = null)
     {
         $server = $_SERVER;
         // Drasko: dont analize media type if a file extension exists in the path
@@ -30,6 +35,7 @@ class HeaderAccept
 
         $acceptFactory = new AcceptFactory($server);
         $this->accept = $acceptFactory->newInstance();
+        $this->availableContentTypes = $availableContentTypes;
     }
 
     public function getFormat()
@@ -53,10 +59,12 @@ class HeaderAccept
 
     private function available()
     {
-        return [
-            HeaderAcceptConst::JSON,
-            HeaderAcceptConst::HTML,
-        ];
+        return $this->availableContentTypes
+            ? $this->availableContentTypes
+            : [
+                HeaderAcceptConst::JSON,
+                HeaderAcceptConst::HTML,
+            ];
     }
 
     private function hasDetected()

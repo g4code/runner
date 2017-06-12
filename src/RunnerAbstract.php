@@ -9,6 +9,8 @@ use G4\Runner\Logger;
 use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\Formatter\FormatterInterface;
 use G4\Runner\Profiler;
+use G4\Runner\Presenter\ContentType;
+use G4\Runner\Presenter\HeaderAccept;
 
 abstract class RunnerAbstract implements RunnerInterface
 {
@@ -28,6 +30,10 @@ abstract class RunnerAbstract implements RunnerInterface
      */
     private $commando;
 
+    /**
+     * @var HeaderAccept
+     */
+    private $headerAccept;
 
     /**
      * @var \G4\Http\Request
@@ -54,11 +60,14 @@ abstract class RunnerAbstract implements RunnerInterface
      */
     private $routerOptions;
 
-    public function __construct()
+    public function __construct($headerAccept = null)
     {
         $this->profiler          = new Profiler();
         $this->logger            = new Logger();
         $this->responseFormatter = new ResponseFormatter();
+        $this->headerAccept = $headerAccept
+            ? $headerAccept
+            : new HeaderAccept();
     }
 
     public function getApplication()
@@ -135,7 +144,9 @@ abstract class RunnerAbstract implements RunnerInterface
 
         $this->application->run();
 
-        (new Presenter($this->getDataTransfer(), $this->responseFormatter))->render();
+        $contentType = new ContentType($this->getDataTransfer(), $this->headerAccept);
+
+        (new Presenter($this->responseFormatter, $contentType))->render();
 
          $this->logger->logResponse($this->application, $this->profiler);
     }
