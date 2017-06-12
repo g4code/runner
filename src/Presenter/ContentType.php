@@ -28,11 +28,12 @@ class ContentType
 
     /**
      * @param DataTransfer $dataTransfer
+     * @param HeaderAccept $headerAccept
      */
-    public function __construct(DataTransfer $dataTransfer)
+    public function __construct(DataTransfer $dataTransfer, HeaderAccept $headerAccept)
     {
         $this->dataTransfer = $dataTransfer;
-        $this->headerAccept = new HeaderAccept(); //TODO: Drasko move from construct dependency!
+        $this->headerAccept = $headerAccept;
         $this->formatFactory();
     }
 
@@ -42,6 +43,14 @@ class ContentType
     public function getContentType()
     {
         return $this->contentTypeMap()[$this->getFormat()];
+    }
+
+    /**
+     * @return \G4\Runner\Presenter\DataTransfer
+     */
+    public function getDataTransfer()
+    {
+        return $this->dataTransfer;
     }
 
     /**
