@@ -28,7 +28,7 @@
     },
     "require": {
         "php"            : ">=5.4",
-        "aura/accept"    : "2.2.2",
+        "aura/accept"    : "2.2.*",
         "g4/clean-core"  : "*",
         "g4/http"        : "*",
         "g4/di"          : "*",
