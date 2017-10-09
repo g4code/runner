@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1b81cf150e8fdbcf6311c1a98cb65b9",
+    "content-hash": "b1f080d5c8a55e586db10093df67cad5",
     "packages": [
         {
             "name": "aura/accept",
-            "version": "2.2.5",
+            "version": "2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Accept.git",
-                "reference": "38d835363d424e07b35dd35f46b00b2916500ee6"
+                "reference": "e7959639b7014501f9dfb886e85ba0f765501fde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Accept/zipball/38d835363d424e07b35dd35f46b00b2916500ee6",
-                "reference": "38d835363d424e07b35dd35f46b00b2916500ee6",
+                "url": "https://api.github.com/repos/auraphp/Aura.Accept/zipball/e7959639b7014501f9dfb886e85ba0f765501fde",
+                "reference": "e7959639b7014501f9dfb886e85ba0f765501fde",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "content type",
                 "media type"
             ],
-            "time": "2017-03-10T17:30:49+00:00"
+            "time": "2017-10-06 13:08:53"
         },
         {
             "name": "g4/buffer",
@@ -850,7 +850,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "aura/accept": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
