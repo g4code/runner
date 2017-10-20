@@ -23,14 +23,20 @@ class Twig extends ViewAbstract implements ViewInterface
     private $templatesPath;
 
     /**
+     * @var string
+     */
+    private $templatesRootPath;
+
+    /**
      * @param array $data
      * @param DataTransfer $dataTransfer
      */
     public function __construct(array $data, DataTransfer $dataTransfer)
     {
         parent::__construct($data, $dataTransfer);
-        $this->templatesPath  = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
-        $this->layoutName     = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::LAYOUT);
+        $this->templatesRootPath    = realpath(PATH_APP . '/templates');
+        $this->templatesPath        = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
+        $this->layoutName           = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::LAYOUT);
     }
 
     /**
@@ -51,12 +57,12 @@ class Twig extends ViewAbstract implements ViewInterface
 
     private function renderContentWithLayout()
     {
-        return (new Template($this->templatesPath))->render($this->getLayoutData(), $this->getLayoutFilename());
+        return (new Template($this->templatesPath, $this->templatesRootPath))->render($this->getLayoutData(), $this->getLayoutFilename());
     }
 
     private function renderOnlyContent()
     {
-        return (new Template($this->templatesPath))->render($this->getData(), $this->getContentFilename());
+        return (new Template($this->templatesPath, $this->templatesRootPath))->render($this->getData(), $this->getContentFilename());
     }
 
     /**

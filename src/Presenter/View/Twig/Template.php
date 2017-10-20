@@ -17,12 +17,18 @@ class Template
     private $templateEngine;
 
     /**
+     * @var string
+     */
+    private $templatesRootPath;
+
+    /**
      * @param array $data
      * @param DataTransfer $dataTransfer
      */
-    public function __construct($templatesPath)
+    public function __construct($templatesPath, $templatesRootPath)
     {
-        $this->templatesPath = $templatesPath;
+        $this->templatesPath     = $templatesPath;
+        $this->templatesRootPath = $templatesRootPath;
     }
 
     /**
@@ -45,7 +51,7 @@ class Template
      */
     private function getFilesystemLoader()
     {
-        return new \Twig_Loader_Filesystem($this->templatesPath);
+        return new \Twig_Loader_Filesystem([$this->templatesPath, $this->templatesRootPath]);
     }
 
     /**
