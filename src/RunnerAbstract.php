@@ -160,7 +160,8 @@ abstract class RunnerAbstract implements RunnerInterface
 
         (new Presenter($this->responseFormatter, $contentType))->render();
 
-         $this->logger->logResponse($this->application, $this->profiler);
+        $this->logger->logResponse($this->application, $this->profiler);
+        $this->loggerSecurity->logSecurity($this->application, $this->profiler);
     }
 
     public function setCommando(\G4\Commando\Cli $commando)
