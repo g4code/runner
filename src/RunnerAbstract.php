@@ -46,6 +46,11 @@ abstract class RunnerAbstract implements RunnerInterface
     private $logger;
 
     /**
+     * @var Logger
+     */
+    private $loggerSecurity;
+
+    /**
      * @var Profiler
      */
     private $profiler;
@@ -117,6 +122,12 @@ abstract class RunnerAbstract implements RunnerInterface
     public function registerRequestLogger(LogLogger $logger)
     {
         $this->logger->setLogger($logger);
+        return $this;
+    }
+
+    public function registerSecurityLogger(LogLogger $logger)
+    {
+        $this->loggerSecurity->setLogger($logger);
         return $this;
     }
 
