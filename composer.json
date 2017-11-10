@@ -26,7 +26,6 @@
     },
     "require-dev": {
     },
-    "minimum-stability": "dev",
     "require": {
         "php"            : ">=5.4",
         "aura/accept"    : "2.x-dev",

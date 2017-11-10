@@ -69,6 +69,7 @@ abstract class RunnerAbstract implements RunnerInterface
     {
         $this->profiler          = new Profiler();
         $this->logger            = new Logger();
+        $this->loggerSecurity    = new Logger();
         $this->responseFormatter = new ResponseFormatter();
         $this->headerAccept = $headerAccept
             ? $headerAccept
