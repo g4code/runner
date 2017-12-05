@@ -6,6 +6,9 @@ use G4\Profiler\Ticker\TickerAbstract;
 
 class Profiler
 {
+    const LOG_OFF = 0;
+    const LOG_ERRORS_ONLY = 1;
+    const LOG_ALWAYS = 2;
 
     /**
      * @var array
@@ -17,11 +20,16 @@ class Profiler
      */
     private $profilers;
 
+    /**
+     * @var int
+     */
+    private $logLevel;
 
     public function __construct()
     {
         $this->profilers = [];
         $this->formatted = null;
+        $this->logLevel = self::LOG_ALWAYS;
     }
 
     /**
@@ -34,14 +42,31 @@ class Profiler
         return $this;
     }
 
+    public function setLogLevel($logLevel)
+    {
+        $this->logLevel = (int) $logLevel;
+        return $this;
+    }
+
     /**
      * @return array
      */
-    public function getProfilerOutput()
+    public function getProfilerOutput($httpCode)
     {
-        return $this->hasProfilers()
+        return $this->hasProfilers() && $this->shouldLogProfiler($httpCode)
             ? $this->getFormatted()
             : [];
+    }
+
+    private function shouldLogProfiler($httpCode)
+    {
+        if ($this->logLevel === self::LOG_OFF) {
+            return false;
+        }
+        if ($this->logLevel === self::LOG_ALWAYS) {
+            return true;
+        }
+        return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
     }
 
     /**

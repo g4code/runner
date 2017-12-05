@@ -114,6 +114,12 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this->httpRequest;
     }
 
+    public function setProfilerLogLevel($profilerLogLevel)
+    {
+        $this->profiler->setLogLevel($profilerLogLevel);
+        return $this;
+    }
+
     public function registerProfilerTicker(\G4\Profiler\Ticker\TickerAbstract $profiler)
     {
         $this->profiler->addProfiler($profiler);
