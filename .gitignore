@@ -1,6 +1,6 @@
 # Add your rules here #
 #######################
-
+tests/unit/coverage/*
 
 # Default GIT ignore rules #
 ############################
