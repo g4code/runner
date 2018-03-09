@@ -5,12 +5,12 @@ namespace G4\Runner;
 use G4\Constants\Http;
 use G4\Constants\Parameters;
 use G4\Log\Logger as LogLogger;
-use G4\Runner\Logger;
 use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\Formatter\FormatterInterface;
-use G4\Runner\Profiler;
 use G4\Runner\Presenter\ContentType;
 use G4\Runner\Presenter\HeaderAccept;
+use G4\Runner\Route\Route;
+use G4\Runner\Route\RouteFormatter;
 
 abstract class RunnerAbstract implements RunnerInterface
 {
@@ -64,6 +64,11 @@ abstract class RunnerAbstract implements RunnerInterface
      * @var array
      */
     private $routerOptions;
+
+    /**
+     * @var Route
+     */
+    private $route;
 
     public function __construct($headerAccept = null)
     {
@@ -176,6 +181,11 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
+    public function setRoute(Route $route)
+    {
+        $this->route = $route;
+    }
+
     private function getDataTransfer()
     {
         return new DataTransfer(
@@ -219,12 +229,19 @@ abstract class RunnerAbstract implements RunnerInterface
 
     private function route()
     {
+        if ($this->route instanceof Route) {
+            $this->routerOptions = RouteFormatter::format($this->route);
+
+            return $this;
+        }
+
         $this->routerOptions = !$this->getHttpRequest()->isCli()
             ? require_once PATH_CONFIG . '/routes.php'
             : [
                 'module'  => $this->commando->value('module'),
                 'service' => $this->commando->value('service'),
             ];
+
         return $this;
     }
 }
