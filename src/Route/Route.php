@@ -2,9 +2,7 @@
 
 namespace G4\Runner\Route;
 
-use G4\Runner\Exception\InvalidModule;
 use G4\Runner\Exception\InvalidModuleException;
-use G4\Runner\Exception\InvalidService;
 use G4\Runner\Exception\InvalidServiceException;
 use G4\ValueObject\StringLiteral;
 
