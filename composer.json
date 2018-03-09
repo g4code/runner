@@ -31,6 +31,7 @@
         "g4/http"        : "*",
         "g4/di"          : "*",
         "g4/profiler"    : "*",
+        "g4/factory"     : "1.*",
         "twig/twig"      : "1.*",
         "twig/extensions": "^1.2"
     },

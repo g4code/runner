@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a2329ff7c961b585fc8e0f559867dbb",
+    "content-hash": "0491fa3e323b4c10142aba1a2e9c354d",
     "packages": [
         {
             "name": "aura/accept",
@@ -257,6 +257,64 @@
                 "pimple"
             ],
             "time": "2015-09-28T12:52:20+00:00"
+        },
+        {
+            "name": "g4/factory",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/g4code/factory.git",
+                "reference": "f69c0d0c8ae3a06c0ff22810203baa02a94426c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/g4code/factory/zipball/f69c0d0c8ae3a06c0ff22810203baa02a94426c7",
+                "reference": "f69c0d0c8ae3a06c0ff22810203baa02a94426c7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "G4\\Factory\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Drasko Gomboc",
+                    "email": "drasko.gomboc@gmail.com"
+                },
+                {
+                    "name": "Dejan Samardzija",
+                    "email": "samardzijadejan@gmail.com"
+                },
+                {
+                    "name": "Ivan Krickovic",
+                    "email": "ivan.krickovic@gmail.com"
+                },
+                {
+                    "name": "Zeljko Simic",
+                    "email": "zeljkosbgd@gmail.com"
+                }
+            ],
+            "description": "factory php library",
+            "keywords": [
+                "create",
+                "factory",
+                "map",
+                "mapping",
+                "reconstitute"
+            ],
+            "time": "2017-08-15T12:07:47+00:00"
         },
         {
             "name": "g4/http",
