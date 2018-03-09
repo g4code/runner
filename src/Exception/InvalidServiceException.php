@@ -4,7 +4,7 @@ namespace G4\Runner\Exception;
 
 use G4\Runner\Route\ErrorCodes;
 
-class InvalidService extends \Exception
+class InvalidServiceException extends \Exception
 {
     const MESSAGE = 'Service is not valid: %s';
 

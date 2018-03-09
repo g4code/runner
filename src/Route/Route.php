@@ -3,7 +3,9 @@
 namespace G4\Runner\Route;
 
 use G4\Runner\Exception\InvalidModule;
+use G4\Runner\Exception\InvalidModuleException;
 use G4\Runner\Exception\InvalidService;
+use G4\Runner\Exception\InvalidServiceException;
 use G4\ValueObject\StringLiteral;
 
 class Route
@@ -49,7 +51,7 @@ class Route
     private function setService($service)
     {
         if (!preg_match('/^[A-Za-z0-9-]+$/', $service)) {
-            throw new InvalidService($service);
+            throw new InvalidServiceException($service);
         }
 
         $this->service = $service;
@@ -62,7 +64,7 @@ class Route
     private function setModule($module)
     {
         if (!preg_match('/^[A-Za-z0-9-]+$/', $module)) {
-            throw new InvalidModule($module);
+            throw new InvalidModuleException($module);
         }
 
         $this->module = $module;

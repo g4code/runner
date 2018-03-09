@@ -10,7 +10,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      * @test
      * @param $module
      * @dataProvider invalidModuleAndServiceStrings
-     * @expectedException G4\Runner\Exception\InvalidModule
+     * @expectedException G4\Runner\Exception\InvalidModuleException
      */
     public function testConstructWithInvalidModuleNames($module)
     {
@@ -21,7 +21,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
      * @test
      * @param $service
      * @dataProvider invalidModuleAndServiceStrings
-     * @expectedException G4\Runner\Exception\InvalidService
+     * @expectedException G4\Runner\Exception\InvalidServiceException
      */
     public function testConstructWithInvalidServiceNames($service)
     {

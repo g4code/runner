@@ -4,7 +4,7 @@ namespace G4\Runner\Exception;
 
 use G4\Runner\Route\ErrorCodes;
 
-class InvalidModule extends \Exception
+class InvalidModuleException extends \Exception
 {
     const MESSAGE = 'Module is not valid: %s';
 
