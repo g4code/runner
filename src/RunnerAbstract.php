@@ -46,11 +46,6 @@ abstract class RunnerAbstract implements RunnerInterface
     private $logger;
 
     /**
-     * @var Logger
-     */
-    private $loggerSecurity;
-
-    /**
      * @var Profiler
      */
     private $profiler;
@@ -74,7 +69,6 @@ abstract class RunnerAbstract implements RunnerInterface
     {
         $this->profiler          = new Profiler();
         $this->logger            = new Logger();
-        $this->loggerSecurity    = new Logger();
         $this->responseFormatter = new ResponseFormatter();
         $this->headerAccept = $headerAccept
             ? $headerAccept
@@ -137,12 +131,6 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
-    public function registerSecurityLogger(LogLogger $logger)
-    {
-        $this->loggerSecurity->setLogger($logger);
-        return $this;
-    }
-
     public function registerFormatterBasic(FormatterInterface $formatter)
     {
         $this->responseFormatter->addBasic($formatter);
@@ -172,7 +160,6 @@ abstract class RunnerAbstract implements RunnerInterface
         (new Presenter($this->responseFormatter, $contentType))->render();
 
         $this->logger->logResponse($this->application, $this->profiler);
-        $this->loggerSecurity->logSecurity($this->application, $this->profiler);
     }
 
     public function setCommando(\G4\Commando\Cli $commando)

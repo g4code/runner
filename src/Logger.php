@@ -7,7 +7,6 @@ use G4\Constants\Parameters;
 use G4\Log\Logger as LogLogger;
 use G4\Profiler\Data\Request as ProfilerDataRequest;
 use G4\Profiler\Data\Response as ProfilerDataResponse;
-use G4\Profiler\Data\Security as ProfilerDataSecurity;
 
 use G4\Runner\Profiler;
 
@@ -65,13 +64,6 @@ class Logger
         }
     }
 
-    public function logSecurity(Application $application, Profiler $profiler)
-    {
-        if ($this->isLoggerRegistered()) {
-            register_shutdown_function([$this->logger, 'logSecurity'], $this->getDataForSecurity($application, $profiler));
-        }
-    }
-
     /**
      * @param Application $application
      * @return ProfilerDataRequest
@@ -98,16 +90,6 @@ class Logger
             ->setApplication($application)
             ->setId($this->uniqueId)
             ->setStartTime($this->startTime)
-            ->setProfiler($profiler);
-        return $loggerData;
-    }
-
-    private function getDataForSecurity(Application $application, Profiler $profiler)
-    {
-        $loggerData = new ProfilerDataSecurity();
-        $loggerData
-            ->setApplication($application)
-            ->setId($this->uniqueId)
             ->setProfiler($profiler);
         return $loggerData;
     }
