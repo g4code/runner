@@ -5,10 +5,9 @@ namespace G4\Runner;
 use G4\CleanCore\Application;
 use G4\Constants\Parameters;
 use G4\Log\Logger as LogLogger;
-use G4\Profiler\Data\Request as ProfilerDataRequest;
-use G4\Profiler\Data\Response as ProfilerDataResponse;
+use G4\Log\Data\Request as LoggerDataRequest;
+use G4\Log\Data\Response as LoggerDataResponse;
 
-use G4\Runner\Profiler;
 
 class Logger
 {
@@ -66,11 +65,11 @@ class Logger
 
     /**
      * @param Application $application
-     * @return ProfilerDataRequest
+     * @return LoggerDataRequest
      */
     private function getDataForRequest(Application $application)
     {
-        $loggerData = new ProfilerDataRequest();
+        $loggerData = new LoggerDataRequest();
         $loggerData
             ->setApplication($application)
             ->setId($this->uniqueId)
@@ -81,11 +80,11 @@ class Logger
     /**
      * @param Application $application
      * @param Profiler $profiler
-     * @return ProfilerDataResponse
+     * @return LoggerDataResponse
      */
     private function getDataForResponse(Application $application, Profiler $profiler)
     {
-        $loggerData = new ProfilerDataResponse();
+        $loggerData = new LoggerDataResponse();
         $loggerData
             ->setApplication($application)
             ->setId($this->uniqueId)
