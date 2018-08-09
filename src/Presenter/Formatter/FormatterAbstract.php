@@ -46,7 +46,7 @@ abstract class FormatterAbstract implements FormatterInterface
     public function getProfilerData()
     {
         return $this->isProfilerEnabled()
-            ? ['profiler' =>  $this->getDataTransfer()->getProfiler()->getProfilerOutput($this->getDataTransfer()->getResponse()->getHttpResponseCode())]
+            ? ['profiler' =>  $this->getDataTransfer()->getProfiler()->getFormatted()]
             : [];
     }
 

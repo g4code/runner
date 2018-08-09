@@ -51,6 +51,20 @@ class Profiler
     /**
      * @return array
      */
+    public function getFormatted()
+    {
+        if (!$this->hasFormatted()) {
+            $this->formatted = [];
+            foreach($this->profilers as $profiler) {
+                $this->formatted[$profiler->getName()] = $profiler->getFormatted();
+            }
+        }
+        return $this->formatted;
+    }
+
+    /**
+     * @return array
+     */
     public function getProfilerOutput($httpCode)
     {
         return $this->hasProfilers() && $this->shouldLogProfiler($httpCode)
@@ -67,20 +81,6 @@ class Profiler
             return true;
         }
         return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
-    }
-
-    /**
-     * @return array
-     */
-    private function getFormatted()
-    {
-        if (!$this->hasFormatted()) {
-            $this->formatted = [];
-            foreach($this->profilers as $profiler) {
-                $this->formatted[$profiler->getName()] = $profiler->getFormatted();
-            }
-        }
-        return $this->formatted;
     }
 
     /**
