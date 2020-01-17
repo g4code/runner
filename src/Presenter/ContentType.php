@@ -4,8 +4,6 @@ namespace G4\Runner\Presenter;
 
 use G4\Constants\Format;
 use G4\Constants\ContentType as ContentTypeConst;
-use G4\Runner\Presenter\DataTransfer;
-use G4\Runner\Presenter\HeaderAccept;
 
 class ContentType
 {
@@ -69,6 +67,7 @@ class ContentType
         return in_array($this->format, [
             Format::JSON,
             Format::TWIG,
+            Format::GIF,
         ]);
     }
 
@@ -80,6 +79,7 @@ class ContentType
         return [
             Format::JSON => ContentTypeConst::JSON,
             Format::TWIG => ContentTypeConst::HTML,
+            Format::GIF  => ContentTypeConst::GIF,
         ];
     }
 
