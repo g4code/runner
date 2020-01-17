@@ -19,11 +19,11 @@ self-update:
 
 test:
 	@/bin/echo -e "${TITLE} testing suite started..." \
-	&& vendor/phpunit/phpunit/composer/bin/phpunit -c test/phpunit.xml
+	&& vendor/phpunit/phpunit/phpunit -c tests/unit/phpunit.xml
 
 test-group:
 	@/bin/echo -e "${TITLE} testing suite started..." \
-	&& vendor/phpunit/phpunit/composer/bin/phpunit -c tests/phpunit.xml --group $(g) \
+	&& vendor/phpunit/phpunit/phpunit -c tests/unit/phpunit.xml --group $(g) \
 
 update:
 	@/bin/echo -e "${TITLE} update dependencies..." \

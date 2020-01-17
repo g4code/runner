@@ -3,14 +3,13 @@
 namespace G4\Runner\Presenter;
 
 use G4\Constants\Format;
-use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\View\Json;
 use G4\Runner\Presenter\View\Twig;
+use G4\Runner\Presenter\View\Image;
 use G4\Runner\Presenter\View\ViewInterface;
 
 class View
 {
-
     /**
      * @var ContentType
      */
@@ -25,7 +24,6 @@ class View
      * @var DataTransfer
      */
     private $dataTransfer;
-
 
     public function __construct(array $data, ContentType $contentType, DataTransfer $dataTransfer)
     {
@@ -50,6 +48,8 @@ class View
         switch ($this->contentType->getFormat()) {
             case Format::TWIG:
                 return new Twig($this->data, $this->dataTransfer);
+            case Format::GIF:
+                return new Image($this->data, $this->dataTransfer);
             case Format::JSON:
             default:
                 return new Json($this->data, $this->dataTransfer);

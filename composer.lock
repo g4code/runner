@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0491fa3e323b4c10142aba1a2e9c354d",
+    "content-hash": "ee9538ea3fd925bee24991a49eca295c",
     "packages": [
         {
             "name": "aura/accept",
@@ -171,20 +171,20 @@
         },
         {
             "name": "g4/constants",
-            "version": "0.6.16",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/g4code/constants.git",
-                "reference": "01c1ad8483d8c9c1c22de060279ca95c8c12d3ad"
+                "reference": "4003b16bc10272643c16b2f1d9593efc8d320e5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/g4code/constants/zipball/01c1ad8483d8c9c1c22de060279ca95c8c12d3ad",
-                "reference": "01c1ad8483d8c9c1c22de060279ca95c8c12d3ad",
+                "url": "https://api.github.com/repos/g4code/constants/zipball/4003b16bc10272643c16b2f1d9593efc8d320e5f",
+                "reference": "4003b16bc10272643c16b2f1d9593efc8d320e5f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=5.6"
             },
             "type": "library",
             "autoload": {
@@ -206,7 +206,7 @@
             "keywords": [
                 "constants"
             ],
-            "time": "2018-05-30T10:46:33+00:00"
+            "time": "2020-01-17T07:53:08+00:00"
         },
         {
             "name": "g4/di",
@@ -922,6 +922,7 @@
                 "paginator",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-paginator",
             "time": "2018-01-30T15:52:44+00:00"
         },
         {
@@ -968,6 +969,7 @@
                 "stdlib",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-stdlib",
             "time": "2018-04-30T13:50:40+00:00"
         }
     ],
@@ -1814,6 +1816,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
@@ -2663,7 +2666,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4"
+        "php": ">=5.6"
     },
     "platform-dev": []
 }
