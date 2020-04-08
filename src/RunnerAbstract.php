@@ -119,6 +119,14 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
+    /**
+     * @return Profiler
+     */
+    public function getProfiler()
+    {
+        return $this->profiler;
+    }
+
     public function registerProfilerTicker(\G4\Profiler\Ticker\TickerAbstract $profiler)
     {
         $this->profiler->addProfiler($profiler);
@@ -129,6 +137,14 @@ abstract class RunnerAbstract implements RunnerInterface
     {
         $this->logger->setLogger($logger);
         return $this;
+    }
+
+    /**
+     * @return Logger
+     */
+    public function getRequestLogger()
+    {
+        return $this->logger;
     }
 
     public function registerFormatterBasic(FormatterInterface $formatter)
