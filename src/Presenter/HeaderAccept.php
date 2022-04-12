@@ -64,7 +64,7 @@ class HeaderAccept
 
         return $this->hasDetected() && $this->existInAcceptMap()
             ? $this->getFormatFromAcceptMap()
-            : self::FORMAT_JSON;
+            : $this->getFirstFromAvailableContentOrDefault();
     }
 
     /**
@@ -102,5 +102,13 @@ class HeaderAccept
     private function getFormatFromAcceptMap()
     {
         return self::ACCEPT_MAP[$this->media->getValue()];
+    }
+
+    /**
+     * @return string|bool
+     */
+    private function getFirstFromAvailableContentOrDefault()
+    {
+        return isset($this->availableContentTypes[0]) ? self::ACCEPT_MAP[$this->availableContentTypes[0]] : self::FORMAT_JSON;
     }
 }

@@ -37,4 +37,17 @@ class HeaderAcceptTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('json', $headerAccept->getFormat());
     }
+
+    public function testFirstAllowed()
+    {
+        $_SERVER['HTTP_ACCEPT'] = 'text/html';
+        $headerAccept           = new HeaderAccept(['application/json']);
+
+        $this->assertEquals('json', $headerAccept->getFormat());
+
+        $_SERVER['HTTP_ACCEPT'] = 'application/json';
+        $headerAccept           = new HeaderAccept(['text/html']);
+
+        $this->assertEquals('twig', $headerAccept->getFormat());
+    }
 }
