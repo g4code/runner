@@ -70,9 +70,7 @@ abstract class RunnerAbstract implements RunnerInterface
         $this->profiler          = new Profiler();
         $this->logger            = new Logger();
         $this->responseFormatter = new ResponseFormatter();
-        $this->headerAccept = $headerAccept
-            ? $headerAccept
-            : new HeaderAccept();
+        $this->headerAccept      = $headerAccept;
     }
 
     public function getApplication()
@@ -170,6 +168,11 @@ abstract class RunnerAbstract implements RunnerInterface
         $this->logger->logRequest($this->application);
 
         $this->application->run();
+
+        if(!$this->headerAccept instanceof HeaderAccept) {
+            $allowedMedia = $this->application->getBootstrapFactory()->getBootstrap()->getAllowedMedia();
+            $this->headerAccept = new HeaderAccept($allowedMedia);
+        }
 
         $contentType = new ContentType($this->getDataTransfer(), $this->headerAccept);
 
