@@ -11,10 +11,10 @@ tests/unit/coverage/*
 .buildpath
 .project
 .export
-.idea
 *~
 dummy.php
 composer.phar
+composer.lock
 vendor
 test/coverage
 
