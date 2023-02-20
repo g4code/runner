@@ -16,7 +16,7 @@ class Profiler
     private $formatted;
 
     /**
-     * @var array
+     * @var array|TickerAbstract[]
      */
     private $profilers;
 
@@ -28,7 +28,6 @@ class Profiler
     public function __construct()
     {
         $this->profilers = [];
-        $this->formatted = null;
         $this->logLevel = self::LOG_ALWAYS;
     }
 
@@ -40,6 +39,13 @@ class Profiler
     {
         $this->profilers[] = $profiler;
         return $this;
+    }
+
+    public function clearProfilers()
+    {
+        foreach ($this->profilers as $aProfiler) {
+            $aProfiler->clear();
+        }
     }
 
     public function setLogLevel($logLevel)
@@ -56,6 +62,11 @@ class Profiler
         return $this->hasProfilers() && $this->shouldLogProfiler($httpCode)
             ? $this->getFormatted()
             : [];
+    }
+
+    public function getProfilerSummary()
+    {
+        return (new ProfilerSummary($this->profilers))->getSummary();
     }
 
     private function shouldLogProfiler($httpCode)

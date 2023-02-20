@@ -30,7 +30,7 @@
         "g4/clean-core"  : "*",
         "g4/http"        : "*",
         "g4/di"          : "*",
-        "g4/profiler"    : "*",
+        "g4/profiler"    : ">=1.10.0",
         "g4/factory"     : "1.*",
         "twig/twig"      : "1.*",
         "twig/extensions": "^1.2"
