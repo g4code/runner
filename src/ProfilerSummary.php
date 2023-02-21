@@ -10,6 +10,9 @@ class ProfilerSummary
     const FORMATTER_SUFFIX_CALLS = '_calls';
     const FORMATTER_SUFFIX_TIME = '_time_ms';
 
+    const CALLS = 'calls';
+    const TIME = 'time';
+
     /**
      * @var array|TickerAbstract[]
      */
@@ -30,22 +33,22 @@ class ProfilerSummary
     {
         $summary = [];
 
-        foreach($this->profilers as $aProfiler) {
+        foreach ($this->profilers as $aProfiler) {
             /** @var TickerAbstract $aProfiler */
             $profilerType = $aProfiler->getType();
-            $summary[$profilerType]['calls'] = isset($summary[$profilerType]['calls'])
-                ? $summary[$profilerType]['calls'] + $aProfiler->getTotalNumQueries()
+            $summary[$profilerType][self::CALLS] = isset($summary[$profilerType][self::CALLS])
+                ? $summary[$profilerType][self::CALLS] + $aProfiler->getTotalNumQueries()
                 : $aProfiler->getTotalNumQueries();
 
-            $summary[$profilerType]['time_ms'] = isset($summary[$profilerType]['calls'])
-                ? $summary[$aProfiler->getType()]['time_ms'] + $aProfiler->getTotalElapsedTime()
+            $summary[$profilerType][self::TIME] = isset($summary[$profilerType][self::TIME])
+                ? $summary[$profilerType][self::TIME] + $aProfiler->getTotalElapsedTime()
                 : $aProfiler->getTotalElapsedTime();
         }
 
         $formatted = [];
         foreach ($summary as $type => $item) {
-            $formatted[self::FORMATTER_PREFIX . $type . self::FORMATTER_SUFFIX_CALLS] = $item['calls'];
-            $formatted[self::FORMATTER_PREFIX . $type . self::FORMATTER_SUFFIX_TIME] = $item['time_ms'] * 1000;
+            $formatted[self::FORMATTER_PREFIX . $type . self::FORMATTER_SUFFIX_CALLS] = $item[self::CALLS];
+            $formatted[self::FORMATTER_PREFIX . $type . self::FORMATTER_SUFFIX_TIME] = $item[self::TIME] * 1000;
         }
         return $formatted;
     }
