@@ -11,6 +11,7 @@ use G4\Runner\Presenter\ContentType;
 use G4\Runner\Presenter\HeaderAccept;
 use G4\Runner\Route\Route;
 use G4\Runner\Route\RouteFormatter;
+use G4\Version\Version;
 
 abstract class RunnerAbstract implements RunnerInterface
 {
@@ -65,6 +66,11 @@ abstract class RunnerAbstract implements RunnerInterface
      */
     private $route;
 
+    /**
+     * @var string|null
+     */
+    private $version;
+
     public function __construct($headerAccept = null)
     {
         $this->profiler          = new Profiler();
@@ -105,7 +111,7 @@ abstract class RunnerAbstract implements RunnerInterface
      */
     public function getHttpRequest()
     {
-        if(null === $this->httpRequest) {
+        if (null === $this->httpRequest) {
             $this->httpRequest = new \G4\Http\Request();
         }
         return $this->httpRequest;
@@ -145,6 +151,12 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this->logger;
     }
 
+    public function setApplicationVersion(Version $version)
+    {
+        $this->version = $version->getVersionNumber();
+        return $this;
+    }
+
     public function registerFormatterBasic(FormatterInterface $formatter)
     {
         $this->responseFormatter->addBasic($formatter);
@@ -158,7 +170,7 @@ abstract class RunnerAbstract implements RunnerInterface
     }
 
     //TODO: Drasko: refactor this!
-    public final function run()
+    final public function run()
     {
         $this->route();
         $this->parseApplicationMethod();
@@ -169,7 +181,7 @@ abstract class RunnerAbstract implements RunnerInterface
 
         $this->application->run();
 
-        if(!$this->headerAccept instanceof HeaderAccept) {
+        if (!$this->headerAccept instanceof HeaderAccept) {
             $allowedMedia = $this->application->getBootstrapFactory()->getBootstrap()->getAllowedMedia();
             $this->headerAccept = new HeaderAccept($allowedMedia);
         }
@@ -198,13 +210,15 @@ abstract class RunnerAbstract implements RunnerInterface
             $this->getHttpRequest(),
             $this->profiler,
             $this->application->getRequest(),
-            $this->application->getResponse());
+            $this->application->getResponse(),
+            $this->version ?: null
+        );
     }
 
     private function getReqParams()
     {
         $params = $this->getHttpRequest()->getParams();
-        if(isset($this->routerOptions['url_part']) && is_array($params)){
+        if (isset($this->routerOptions['url_part']) && is_array($params)) {
             $params['url_part'] = $this->routerOptions['url_part'];
         }
         return $params;
