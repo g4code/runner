@@ -33,7 +33,8 @@
         "g4/profiler"    : ">=1.10.0",
         "g4/factory"     : "1.*",
         "twig/twig"      : "1.*",
-        "twig/extensions": "^1.2"
+        "twig/extensions": "^1.2",
+        "g4/version": "^0.0.2"
     },
     "require-dev": {
         "phpunit/phpunit"           : "5.*",

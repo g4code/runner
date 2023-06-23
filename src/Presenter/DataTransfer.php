@@ -30,13 +30,32 @@ class DataTransfer
      */
     private $response;
 
+    /**
+     * @var string|null
+     */
+    private $version;
 
-    public function __construct(HttpRequest $httpRequest, Profiler $profiler, Request $request, Response $response)
-    {
+
+    public function __construct(
+        HttpRequest $httpRequest,
+        Profiler $profiler,
+        Request $request,
+        Response $response,
+        string $version = null
+    ){
         $this->httpRequest  = $httpRequest;
         $this->profiler     = $profiler;
         $this->request      = $request;
         $this->response     = $response;
+        $this->version      = $version;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 
     /**
