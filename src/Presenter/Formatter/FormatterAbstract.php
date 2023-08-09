@@ -47,7 +47,12 @@ abstract class FormatterAbstract implements FormatterInterface
     public function getProfilerData()
     {
         return $this->isProfilerEnabled()
-            ? ['profiler' =>  $this->getDataTransfer()->getProfiler()->getProfilerOutput($this->getDataTransfer()->getResponse()->getHttpResponseCode())]
+            ? [
+                'profiler' =>  $this->getDataTransfer()->getProfiler()->getProfilerOutput(
+                    $this->getDataTransfer()->getResponse()->getHttpResponseCode(),
+                    $this->getDbProfilerRequestParam()
+                )
+            ]
             : [];
     }
 
@@ -59,7 +64,16 @@ abstract class FormatterAbstract implements FormatterInterface
 
     private function isProfilerEnabled()
     {
+        return $this->getDbProfilerRequestParam() !== null;
+    }
+
+    /**
+     * @return int|null
+     */
+    protected function getDbProfilerRequestParam()
+    {
         return $this->getDataTransfer()->getHttpRequest()->has(Override::DB_PROFILER)
-            && $this->getDataTransfer()->getHttpRequest()->get(Override::DB_PROFILER) == 1;
+            ? (int) $this->getDataTransfer()->getHttpRequest()->get(Override::DB_PROFILER)
+            : null;
     }
 }
