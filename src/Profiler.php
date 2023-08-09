@@ -16,6 +16,11 @@ class Profiler
     private $formatted;
 
     /**
+     * @var array
+     */
+    private $timeline;
+
+    /**
      * @var array|TickerAbstract[]
      */
     private $profilers;
@@ -57,10 +62,10 @@ class Profiler
     /**
      * @return array
      */
-    public function getProfilerOutput($httpCode)
+    public function getProfilerOutput($httpCode, $dbProfiler = 0)
     {
         return $this->hasProfilers() && $this->shouldLogProfiler($httpCode)
-            ? $this->getFormatted()
+            ? $this->getFormatted($dbProfiler)
             : [];
     }
 
@@ -83,15 +88,32 @@ class Profiler
     /**
      * @return array
      */
-    private function getFormatted()
+    private function getFormatted($dbProfiler)
     {
         if (!$this->hasFormatted()) {
             $this->formatted = [];
-            foreach($this->profilers as $profiler) {
+            $this->timeline = [];
+            foreach ($this->profilers as $profiler) {
                 $this->formatted[$profiler->getName()] = $profiler->getFormatted();
+                $this->timeline[] = $profiler->getQueries();
             }
         }
-        return $this->formatted;
+
+        if ((int) $dbProfiler === 1) {
+            return $this->formatted;
+        }
+
+        if ((int) $dbProfiler === 2) {
+            $timelineFormatted = [];
+            foreach ($this->timeline as $queries) {
+                foreach ($queries as $key => $query) {
+                    $timelineFormatted[$key] = $query;
+                }
+            }
+            ksort($timelineFormatted, SORT_NUMERIC);
+            return $timelineFormatted;
+        }
+        return ['unsuported request parameter'];
     }
 
     /**
