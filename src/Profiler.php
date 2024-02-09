@@ -30,6 +30,11 @@ class Profiler
      */
     private $logLevel;
 
+    /**
+     * @var int
+     */
+    private $threshold;
+
     public function __construct()
     {
         $this->profilers = [];
@@ -59,6 +64,12 @@ class Profiler
         return $this;
     }
 
+    public function setThreshold($threshold)
+    {
+        $this->threshold = (int) $threshold;
+        return $this;
+    }
+
     /**
      * @return array
      */
@@ -83,6 +94,11 @@ class Profiler
             return true;
         }
         return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
+    }
+
+    public function shouldLogProfilerOutput($responseElapsedTimeInMs)
+    {
+        return $responseElapsedTimeInMs > $this->threshold;
     }
 
     /**
