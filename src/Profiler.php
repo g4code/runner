@@ -73,9 +73,9 @@ class Profiler
     /**
      * @return array
      */
-    public function getProfilerOutput($httpCode, $dbProfiler = 0)
+    public function getProfilerOutput($httpCode, $dbProfiler = 0, $responseElapsedTime = 0)
     {
-        return $this->hasProfilers() && $this->shouldLogProfiler($httpCode)
+        return $this->hasProfilers() && $this->shouldLogProfiler($httpCode, $responseElapsedTime)
             ? $this->getFormatted($dbProfiler)
             : [];
     }
@@ -85,7 +85,7 @@ class Profiler
         return (new ProfilerSummary($this->profilers))->getSummary();
     }
 
-    private function shouldLogProfiler($httpCode)
+    private function shouldLogProfiler($httpCode, $responseElapsedTime)
     {
         if ($this->logLevel === self::LOG_OFF) {
             return false;
@@ -93,6 +93,11 @@ class Profiler
         if ($this->logLevel === self::LOG_ALWAYS) {
             return true;
         }
+
+        if($this->threshold && $responseElapsedTime > $this->threshold){
+            return true;
+        }
+
         return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
     }
 
