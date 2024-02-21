@@ -101,11 +101,6 @@ class Profiler
         return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
     }
 
-    public function shouldLogProfilerOutput($responseElapsedTimeInMs)
-    {
-        return $responseElapsedTimeInMs > $this->threshold;
-    }
-
     /**
      * @return array
      */
