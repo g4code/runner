@@ -123,6 +123,12 @@ abstract class RunnerAbstract implements RunnerInterface
         return $this;
     }
 
+    public function setProfilerLogThreshold($threshold)
+    {
+        $this->profiler->setThreshold($threshold);
+        return $this;
+    }
+
     /**
      * @return Profiler
      */
