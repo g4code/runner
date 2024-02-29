@@ -4,8 +4,9 @@ use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\HeaderAccept;
 use G4\Runner\Presenter\ContentType;
 use G4\CleanCore\Response\Response;
+use PHPUnit\Framework\TestCase;
 
-class ContentTypeTest extends PHPUnit_Framework_TestCase
+class ContentTypeTest extends TestCase
 {
     /**
      * @dataProvider validDataProvider

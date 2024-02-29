@@ -4,8 +4,9 @@ use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\View;
 use G4\Runner\Presenter\ContentType;
 use G4\CleanCore\Response\Response;
+use PHPUnit\Framework\TestCase;
 
-class ViewTest extends PHPUnit_Framework_TestCase
+class ViewTest extends TestCase
 {
     /**
      * @var View
@@ -32,7 +33,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
     /**
      * Set up method
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->contentType = $this->createMock(ContentType::class);
         $this->dataTransfer = $this->createMock(DataTransfer::class);

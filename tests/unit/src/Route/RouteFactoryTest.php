@@ -2,7 +2,9 @@
 
 namespace G4\Runner\Route;
 
-class RouteFactoryTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RouteFactoryTest extends TestCase
 {
     public function testReconstitute()
     {

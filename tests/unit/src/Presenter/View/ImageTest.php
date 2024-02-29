@@ -3,8 +3,9 @@
 use G4\Runner\Presenter\DataTransfer;
 use G4\Runner\Presenter\View\Image;
 use G4\CleanCore\Response\Response;
+use PHPUnit\Framework\TestCase;
 
-class ImageTest extends PHPUnit_Framework_TestCase
+class ImageTest extends TestCase
 {
     /**
      * @var Image
@@ -31,7 +32,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     /**
      * Set up method
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->dataTransfer = $this->createMock(DataTransfer::class);
         $this->response = $this->createMock(Response::class);
