@@ -2,6 +2,10 @@
 
 namespace G4\Runner\Presenter\View\Twig;
 
+use G4\Runner\Presenter\DataTransfer;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
 class Template
 {
 
@@ -12,7 +16,7 @@ class Template
 
     /**
      *
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $templateEngine;
 
@@ -42,37 +46,34 @@ class Template
         }
 
         return $this->getTemplateEngine()
-            ->loadTemplate($templateName)
-            ->render($data);
+            ->render($templateName, $data);
     }
 
     /**
-     * @return \Twig_Loader_Filesystem
+     * @return FilesystemLoader
      */
     private function getFilesystemLoader()
     {
-        return new \Twig_Loader_Filesystem([$this->templatesPath, $this->templatesRootPath]);
+        return new FilesystemLoader([$this->templatesPath, $this->templatesRootPath]);
     }
 
     /**
-     * @return \Twig_Environment
+     * @return Environment
      */
     private function getTemplateEngine()
     {
-        if(!$this->templateEngine instanceof \Twig_Environment) {
+        if(!$this->templateEngine instanceof Environment) {
             if(is_callable(['\App\DI', 'templateEngine'])) {
                 $this->templateEngine = \App\DI::templateEngine();
-                if(!$this->templateEngine instanceof \Twig_Environment) {
+                if(!$this->templateEngine instanceof Environment) {
                     throw new \Exception("Template engine class is invalid");
                 }
             } else {
-                $this->templateEngine = new \Twig_Environment($this->getFilesystemLoader(), [
+                $this->templateEngine = new Environment($this->getFilesystemLoader(), [
                     'cache'       => realpath(PATH_CACHE),
                     'auto_reload' => true,
                     'debug'       => true,
                 ]);
-                $this->templateEngine->addExtension(new \Twig_Extensions_Extension_I18n());
-                $this->templateEngine->addExtension(new \Twig_Extension_Debug());
             }
         }
 

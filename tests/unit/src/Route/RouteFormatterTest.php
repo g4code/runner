@@ -3,8 +3,9 @@
 namespace G4\Runner\Route;
 
 use G4\ValueObject\StringLiteral;
+use PHPUnit\Framework\TestCase;
 
-class RouteFormatterTest extends \PHPUnit_Framework_TestCase
+class RouteFormatterTest extends TestCase
 {
     public function testFormat()
     {

@@ -17,6 +17,7 @@ composer.phar
 composer.lock
 vendor
 test/coverage
+tests/unit/.phpunit.result.cache
 
 # Compiled source #
 ###################

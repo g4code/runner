@@ -2,34 +2,34 @@
 
 namespace G4\Runner\Route;
 
+use G4\Runner\Exception\InvalidModuleException;
+use G4\Runner\Exception\InvalidServiceException;
 use G4\ValueObject\StringLiteral;
+use PHPUnit\Framework\TestCase;
 
-class RouteTest extends \PHPUnit_Framework_TestCase
+class RouteTest extends TestCase
 {
     /**
-     * @test
      * @param $module
      * @dataProvider invalidModuleAndServiceStrings
-     * @expectedException G4\Runner\Exception\InvalidModuleException
      */
     public function testConstructWithInvalidModuleNames($module)
     {
+        $this->expectException(InvalidModuleException::class);
         new Route(new StringLiteral($module), new StringLiteral('service'));
     }
 
     /**
-     * @test
      * @param $service
      * @dataProvider invalidModuleAndServiceStrings
-     * @expectedException G4\Runner\Exception\InvalidServiceException
      */
     public function testConstructWithInvalidServiceNames($service)
     {
+        $this->expectException(InvalidServiceException::class);
         new Route(new StringLiteral('module'), new StringLiteral($service));
     }
 
     /**
-     * @test
      * @dataProvider validModuleAndServiceStrings
      */
     public function testConstructWithValidArguments($value)
@@ -38,7 +38,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($route->service(), $value);
         $this->assertEquals($route->module(), $value);
     }
-    
+
     public function invalidModuleAndServiceStrings()
     {
         return [

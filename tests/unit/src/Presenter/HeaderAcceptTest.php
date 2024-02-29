@@ -2,9 +2,10 @@
 
 
 use G4\Runner\Presenter\HeaderAccept;
+use PHPUnit\Framework\TestCase;
 
 
-class HeaderAcceptTest extends PHPUnit_Framework_TestCase
+class HeaderAcceptTest extends TestCase
 {
 
     public function testDefault()
