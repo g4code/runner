@@ -76,7 +76,7 @@ class Profiler
     public function getProfilerOutput($httpCode, $dbProfiler = 0, $responseElapsedTime = 0)
     {
         return $this->hasProfilers() && $this->shouldLogProfiler($httpCode, $responseElapsedTime)
-            ? $this->getFormatted($dbProfiler)
+            ? $this->getFormatted($dbProfiler, $responseElapsedTime)
             : [];
     }
 
@@ -94,17 +94,22 @@ class Profiler
             return true;
         }
 
-        if($this->threshold && $responseElapsedTime > $this->threshold){
+        if($this->isRequestTresholdExceded($responseElapsedTime)){
             return true;
         }
 
         return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
     }
 
+    public function isRequestTresholdExceded($responseElapsedTime)
+    {
+        return $this->threshold && $responseElapsedTime > $this->threshold;
+    }
+
     /**
      * @return array
      */
-    private function getFormatted($dbProfiler)
+    private function getFormatted($dbProfiler, $responseElapsedTime)
     {
         if (!$this->hasFormatted()) {
             $this->formatted = [];
@@ -119,7 +124,7 @@ class Profiler
             return $this->formatted;
         }
 
-        if ((int) $dbProfiler === 2) {
+        if ((int) $dbProfiler === 2 || $this->isRequestTresholdExceded($responseElapsedTime)) {
             $timelineFormatted = [];
             foreach ($this->timeline as $queries) {
                 foreach ($queries as $key => $query) {
