@@ -96,9 +96,15 @@ abstract class RunnerAbstract implements RunnerInterface
 
     public function getApplicationParams()
     {
-        return $this->getHttpRequest()->isCli()
+        $applicationParams =  $this->getHttpRequest()->isCli()
             ? json_decode($this->commando->value('params'), true)
             : $this->getReqParams();
+
+        if (isset($applicationParams['media']) && is_string($applicationParams['media'])) {
+            $applicationParams['media'] = substr($applicationParams['media'], 0, 100);
+        }
+
+        return $applicationParams;
     }
 
     public function getApplicationService()
