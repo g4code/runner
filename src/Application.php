@@ -34,20 +34,25 @@ class Application extends \G4\CleanCore\Application
     private function getRequestAnonymizationRules()
     {
         return [
-            Parameters::X_ND_AUTH => function($value) {
+            Parameters::X_ND_AUTH => function ($value) {
                 return substr_replace($value, str_repeat('*', 20), 0, -12);
             },
-            Parameters::X_ND_APP_KEY => function($value) {
+            Parameters::X_ND_APP_KEY => function ($value) {
                 return substr_replace($value, str_repeat('*', 20), 0, -12);
             },
-            Parameters::CC_NUMBER => function($value) {
+            Parameters::CC_NUMBER => function ($value) {
                 return substr_replace($value, str_repeat('*', 12), 0, -4);
             },
             Parameters::CC_CVV2 => '***',
             Parameters::SESSION => null, // null value will actually unset params key from response
             '__site_id'     => null,
             '__system_type' => null,
-            'image'         => null,
+            'image'         => function ($value) {
+                return substr($value, 0, 32) . '...';
+            },
+            'media'         => function ($value) {
+                return substr($value, 0, 32) . '...';
+            },
         ];
     }
 }
