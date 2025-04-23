@@ -80,11 +80,23 @@ class Profiler
             : [];
     }
 
+    public function getTaskerProfilerOutput($executionTime = 0, $dbProfiler = 2)
+    {
+        return $this->hasProfilers() && $this->shouldLogProfiler(200, $executionTime)
+            ? $this->getFormatted($dbProfiler, $executionTime)
+            : [];
+    }
+
     public function getProfilerSummary()
     {
         return (new ProfilerSummary($this->profilers))->getSummary();
     }
 
+    /**
+     * @param $httpCode int HTTP Response Code
+     * @param $responseElapsedTime int Response time in seconds
+     * @return bool
+     */
     private function shouldLogProfiler($httpCode, $responseElapsedTime)
     {
         if ($this->logLevel === self::LOG_OFF) {
@@ -94,7 +106,7 @@ class Profiler
             return true;
         }
 
-        if($this->isRequestTresholdExceded($responseElapsedTime)){
+        if ($this->isRequestTresholdExceded($responseElapsedTime)) {
             return true;
         }
 
