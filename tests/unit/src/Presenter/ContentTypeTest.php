@@ -114,7 +114,7 @@ class ContentTypeTest extends TestCase
      *
      * @return array
      */
-    public function validDataProvider()
+    public static function validDataProvider()
     {
         return [
             ['gif', 'image/gif'],
@@ -128,7 +128,7 @@ class ContentTypeTest extends TestCase
      *
      * @return array
      */
-    public function invalidDataProvider()
+    public static function invalidDataProvider()
     {
         return [
             ['ppam'],

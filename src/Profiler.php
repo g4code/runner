@@ -9,6 +9,7 @@ class Profiler
     const LOG_OFF = 0;
     const LOG_ERRORS_ONLY = 1;
     const LOG_ALWAYS = 2;
+    const LOG_ABOVE_THRESHOLD = 3;
 
     /**
      * @var array
@@ -80,11 +81,27 @@ class Profiler
             : [];
     }
 
+    public function getTaskerProfilerOutput($taskStatus, $executionTime = 0)
+    {
+        if (!$this->hasProfilers()) {
+            return null;
+        }
+        if (!$this->shouldLogTaskerProfiler($taskStatus, $executionTime)) {
+            return null;
+        }
+        return $this->getFormatted(2, $executionTime);
+    }
+
     public function getProfilerSummary()
     {
         return (new ProfilerSummary($this->profilers))->getSummary();
     }
 
+    /**
+     * @param $httpCode int HTTP Response Code
+     * @param $responseElapsedTime int Response time in seconds
+     * @return bool
+     */
     private function shouldLogProfiler($httpCode, $responseElapsedTime)
     {
         if ($this->logLevel === self::LOG_OFF) {
@@ -93,12 +110,28 @@ class Profiler
         if ($this->logLevel === self::LOG_ALWAYS) {
             return true;
         }
-
-        if($this->isRequestTresholdExceded($responseElapsedTime)){
+        if ($this->isRequestTresholdExceded($responseElapsedTime)) {
             return true;
         }
 
         return self::LOG_ERRORS_ONLY && substr($httpCode, 0, 1) != 2;
+    }
+
+    private function shouldLogTaskerProfiler($taskStatus, $execTime)
+    {
+        if ($this->logLevel === self::LOG_OFF) {
+            return false;
+        }
+        if ($this->logLevel === self::LOG_ALWAYS) {
+            return true;
+        }
+        if ($this->logLevel === self::LOG_ABOVE_THRESHOLD
+            && $this->isRequestTresholdExceded($execTime)
+        ) {
+            return true;
+        }
+
+        return self::LOG_ERRORS_ONLY && (int) $taskStatus != 2;
     }
 
     public function isRequestTresholdExceded($responseElapsedTime)

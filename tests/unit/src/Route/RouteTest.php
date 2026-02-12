@@ -39,7 +39,7 @@ class RouteTest extends TestCase
         $this->assertEquals($route->module(), $value);
     }
 
-    public function invalidModuleAndServiceStrings()
+    public static function invalidModuleAndServiceStrings()
     {
         return [
             ['front/'],
@@ -50,7 +50,7 @@ class RouteTest extends TestCase
         ];
     }
 
-    public function validModuleAndServiceStrings()
+    public static function validModuleAndServiceStrings()
     {
         return [
             ['front'],
