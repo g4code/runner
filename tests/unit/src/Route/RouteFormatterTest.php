@@ -7,14 +7,27 @@ use PHPUnit\Framework\TestCase;
 
 class RouteFormatterTest extends TestCase
 {
-    public function testFormat()
+    public function testFormat(): void
     {
-        $route = new Route(new StringLiteral('module-name'), new StringLiteral('service-name'));
-        $expectedArray = [
-            'module' => 'module-name',
-            'service' => 'service-name'
-        ];
+        $route = new Route(new StringLiteral('test-module'), new StringLiteral('test-service'));
+        
+        $result = RouteFormatter::format($route);
+        
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('module', $result);
+        $this->assertArrayHasKey('service', $result);
+        $this->assertEquals('test-module', $result['module']);
+        $this->assertEquals('test-service', $result['service']);
+    }
 
-        $this->assertEquals($expectedArray, (new RouteFormatter())->format($route));
+    public function testFormatWithDifferentValues(): void
+    {
+        $route = new Route(new StringLiteral('user'), new StringLiteral('profile'));
+        
+        $result = RouteFormatter::format($route);
+        
+        $this->assertIsArray($result);
+        $this->assertEquals('user', $result['module']);
+        $this->assertEquals('profile', $result['service']);
     }
 }
