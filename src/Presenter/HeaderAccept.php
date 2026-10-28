@@ -109,6 +109,8 @@ class HeaderAccept
      */
     private function getFirstFromAvailableContentOrDefault()
     {
-        return isset($this->availableContentTypes[0]) ? self::ACCEPT_MAP[$this->availableContentTypes[0]] : self::FORMAT_JSON;
+        return isset($this->availableContentTypes[0])
+            ? self::ACCEPT_MAP[$this->availableContentTypes[0]]
+            : self::FORMAT_JSON;
     }
 }

@@ -9,7 +9,7 @@ class Application extends \G4\CleanCore\Application
 {
     public function __construct(\G4\Runner\RunnerInterface $appRunner = null)
     {
-        if(null !== $appRunner && $appRunner instanceof \G4\Runner\RunnerInterface) {
+        if (null !== $appRunner && $appRunner instanceof \G4\Runner\RunnerInterface) {
             $request = new Request();
             $request
                 ->setModule($appRunner->getApplicationModule())

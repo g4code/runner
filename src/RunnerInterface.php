@@ -22,5 +22,4 @@ interface RunnerInterface
     public function getApplicationMethod();
 
     public function getApplicationParams();
-
 }

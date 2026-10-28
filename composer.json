@@ -32,7 +32,8 @@
         "g4/di"          : "*",
         "g4/profiler"    : ">=1.12.0",
         "g4/factory"     : "1.*",
-        "twig/twig"      : "*",
+        "twig/twig"      : "^3.17",
+        "phpmyadmin/twig-i18n-extension": "^5.0",
         "g4/version": "0.0.*"
     },
     "require-dev": {
