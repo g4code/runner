@@ -35,8 +35,10 @@ class Twig extends ViewAbstract implements ViewInterface
     {
         parent::__construct($data, $dataTransfer);
         $this->templatesRootPath    = realpath(PATH_APP . '/templates');
-        $this->templatesPath        = realpath(PATH_APP . '/templates/' . strtolower($this->getDataTransfer()->getRequest()->getModule()));
-        $this->layoutName           = $this->getDataTransfer()->getResponse()->getResponseObjectPart(TemplateConst::LAYOUT);
+        $module                     = strtolower($this->getDataTransfer()->getRequest()->getModule());
+        $this->templatesPath        = realpath(PATH_APP . '/templates/' . $module);
+        $this->layoutName           = $this->getDataTransfer()->getResponse()
+            ->getResponseObjectPart(TemplateConst::LAYOUT);
     }
 
     /**
@@ -57,12 +59,14 @@ class Twig extends ViewAbstract implements ViewInterface
 
     private function renderContentWithLayout()
     {
-        return (new Template($this->templatesPath, $this->templatesRootPath))->render($this->getLayoutData(), $this->getLayoutFilename());
+        return (new Template($this->templatesPath, $this->templatesRootPath))
+            ->render($this->getLayoutData(), $this->getLayoutFilename());
     }
 
     private function renderOnlyContent()
     {
-        return (new Template($this->templatesPath, $this->templatesRootPath))->render($this->getData(), $this->getContentFilename());
+        return (new Template($this->templatesPath, $this->templatesRootPath))
+            ->render($this->getData(), $this->getContentFilename());
     }
 
     /**
@@ -89,7 +93,10 @@ class Twig extends ViewAbstract implements ViewInterface
         //TODO: Drasko: this is temp solution!
         $parts = $this->hasErrorsInResponse()
             ? ['error', 'index']
-            : [$this->getDataTransfer()->getRequest()->getResourceName(), $this->getDataTransfer()->getRequest()->getMethod()];
+            : [
+                $this->getDataTransfer()->getRequest()->getResourceName(),
+                $this->getDataTransfer()->getRequest()->getMethod(),
+            ];
         return strtolower(join('/', $parts));
     }
 

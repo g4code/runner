@@ -8,7 +8,6 @@ use G4\Log\Logger as LogLogger;
 use G4\Log\Data\Request as LoggerDataRequest;
 use G4\Log\Data\Response as LoggerDataResponse;
 
-
 class Logger
 {
 
@@ -59,7 +58,10 @@ class Logger
     public function logResponse(Application $application, Profiler $profiler)
     {
         if ($this->isLoggerRegistered()) {
-            register_shutdown_function([$this->logger, 'logAppend'], $this->getDataForResponse($application, $profiler));
+            register_shutdown_function(
+                [$this->logger, 'logAppend'],
+                $this->getDataForResponse($application, $profiler)
+            );
         }
     }
 

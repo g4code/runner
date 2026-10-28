@@ -42,7 +42,7 @@ class DataTransfer
         Request $request,
         Response $response,
         string $version = null
-    ){
+    ) {
         $this->httpRequest  = $httpRequest;
         $this->profiler     = $profiler;
         $this->request      = $request;

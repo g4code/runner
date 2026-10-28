@@ -3,7 +3,9 @@
 namespace G4\Runner\Presenter\View\Twig;
 
 use G4\Runner\Presenter\DataTransfer;
+use PhpMyAdmin\Twig\Extensions\I18nExtension;
 use Twig\Environment;
+use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
 class Template
@@ -62,10 +64,10 @@ class Template
      */
     private function getTemplateEngine()
     {
-        if(!$this->templateEngine instanceof Environment) {
-            if(is_callable(['\App\DI', 'templateEngine'])) {
+        if (!$this->templateEngine instanceof Environment) {
+            if (is_callable(['\App\DI', 'templateEngine'])) {
                 $this->templateEngine = \App\DI::templateEngine();
-                if(!$this->templateEngine instanceof Environment) {
+                if (!$this->templateEngine instanceof Environment) {
                     throw new \Exception("Template engine class is invalid");
                 }
             } else {
@@ -74,6 +76,8 @@ class Template
                     'auto_reload' => true,
                     'debug'       => true,
                 ]);
+                $this->templateEngine->addExtension(new I18nExtension());
+                $this->templateEngine->addExtension(new DebugExtension());
             }
         }
 
